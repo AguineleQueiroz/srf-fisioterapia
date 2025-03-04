@@ -78,14 +78,20 @@ const submit = () => {
                 </div>
 
                 <div class="grid gap-2">
-                    <Select v-bind="required"
-                            v-model="form.professional_type"
-                            name="professional_type">
+                    <Select v-model="form.professional_type"
+                            name="professional_type"
+                            :class="{ 'border-red-500': form.errors.professional_type }">
                         <SelectTrigger>
                             <SelectValue placeholder="Profissional" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
+                                <SelectItem value="admin">
+                                    Administrador do Sistema
+                                </SelectItem>
+                                <SelectItem value="manager">
+                                    Gerente de Sistema
+                                </SelectItem>
                                 <SelectItem value="basic">
                                     Atendimento/Recepção
                                 </SelectItem>
@@ -101,13 +107,16 @@ const submit = () => {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
+                    <p v-if="form.errors.professional_type" class="text-red-500 text-sm">
+                        {{ form.errors.professional_type }}
+                    </p>
                 </div>
 
                 <div v-if="showDocumentField" class="grid gap-2">
                     <Label for="document">Número de Registro</Label>
                     <Input
-                        id="crefito"
-                        v-model="form.crefito"
+                        id="document"
+                        v-model="form.document"
                         :placeholder="form.professional_type === 'other' ? 'Documento' : '000000-A'"
                         :required="documentRules.required"
                         :pattern="documentRules.pattern?.source"
@@ -128,9 +137,9 @@ const submit = () => {
                 </div>
 
                 <div class="grid gap-2">
-                    <Select v-bind="required"
-                            v-model="form.city"
-                            name="city">
+                    <Select v-model="form.city"
+                            name="city"
+                            :class="{ 'border-red-500': form.errors.city }">
                         <SelectTrigger>
                             <SelectValue placeholder="Cidade" />
                         </SelectTrigger>
@@ -145,6 +154,9 @@ const submit = () => {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
+                    <p v-if="form.errors.city" class="text-red-500 text-sm">
+                        {{ form.errors.city }}
+                    </p>
                 </div>
 
                 <div class="grid gap-2">
