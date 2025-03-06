@@ -83,7 +83,7 @@ return [
 
     'custom' => [
         'attribute-name' => [
-            'rule-name' => 'mensagem personalizada',
+            'cpf' => 'O campo :attribute não é um CPF válido.',
         ],
     ],
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Cassandra\Type\UserType;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -30,19 +31,19 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $this->getValidations($request);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'cpf' => $request->cpf,
-            'phone' => $request->phone,
-            'professional_type' => $request->professional_type,
+        $validated = $request->validate((new \App\Models\User)->rules());
+        $user = User::query()->create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'cpf' => $validated['cpf'],
+            'professional_type' => $validated['professional_type'],
             // crefito or other professional registration document
-            'document' => $request->document,
-            'address' => $request->address,
-            'city' => $request->city,
+            'document' => $validated['document'],
+            'phone' => $validated['phone'],
+            'address' => $validated['address'],
+            'city' => $validated['city'],
+            'password' => Hash::make($validated['password']),
+            'usertype_id' => (new \App\Models\UserType())->getTypeIdByName($validated['professional_type']),
         ]);
 
         event(new Registered($user));
@@ -50,14 +51,5 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return to_route('dashboard');
-    }
-
-    /**
-     * @param Request $request
-     * @return void
-     */
-    public function getValidations(Request $request): void
-    {
-        $request->validate((new \App\Models\User)->rules());
     }
 }

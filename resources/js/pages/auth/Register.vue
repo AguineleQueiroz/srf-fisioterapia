@@ -66,7 +66,7 @@ const submit = () => {
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="email">Seu Email</Label>
+                    <Label for="email">Email</Label>
                     <Input id="email" type="email" required :tabindex="2" autocomplete="email" v-model="form.email" placeholder="email@exemplo.com" />
                     <InputError :message="form.errors.email" />
                 </div>
