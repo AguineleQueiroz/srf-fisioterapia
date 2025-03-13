@@ -31,8 +31,8 @@ const submit = () => {
 </script>
 
 <template>
-    <AuthLayout title="Reset password" description="Please enter your new password below">
-        <Head title="Reset password" />
+    <AuthLayout title="Redefinir senha" description="Por favor, digite sua nova senha abaixo">
+        <Head title="Redefinir senha" />
 
         <form @submit.prevent="submit">
             <div class="grid gap-6">
@@ -43,7 +43,7 @@ const submit = () => {
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password">Password</Label>
+                    <Label for="password">Senha</Label>
                     <Input
                         id="password"
                         type="password"
@@ -58,7 +58,7 @@ const submit = () => {
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password_confirmation"> Confirm Password </Label>
+                    <Label for="password_confirmation"> Confirme a senha </Label>
                     <Input
                         id="password_confirmation"
                         type="password"
@@ -73,7 +73,7 @@ const submit = () => {
 
                 <Button type="submit" class="mt-4 w-full" :disabled="form.processing">
                     <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                    Reset password
+                    Redefinir senha
                 </Button>
             </div>
         </form>

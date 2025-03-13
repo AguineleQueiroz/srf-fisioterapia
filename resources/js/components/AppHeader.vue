@@ -74,12 +74,12 @@ const rightNavItems: NavItem[] = [
                         </SheetTrigger>
                         <SheetContent side="left" class="w-[300px] p-6">
                             <SheetTitle class="sr-only">Navigation Menu</SheetTitle>
-                            <SheetHeader class="flex justify-start text-left">
-                                <AppLogoIcon class="size-6 fill-current text-black dark:text-white" />
+                            <SheetHeader class="flex items-center w-24">
+                                <AppLogoIcon class="mr-2" />
                             </SheetHeader>
                             <div class="flex h-full flex-1 flex-col justify-between space-y-4 py-6">
                                 <nav class="-mx-3 space-y-1">
-                                    <!--<Link
+                                    <Link
                                         v-for="item in mainNavItems"
                                         :key="item.title"
                                         :href="item.href"
@@ -88,7 +88,7 @@ const rightNavItems: NavItem[] = [
                                     >
                                         <component v-if="item.icon" :is="item.icon" class="h-5 w-5" />
                                         {{ item.title }}
-                                    </Link> -->
+                                    </Link>
                                 </nav>
                                 <div class="flex flex-col space-y-4">
                                     <!--<a
@@ -109,7 +109,7 @@ const rightNavItems: NavItem[] = [
                 </div>
 
                 <Link :href="route('dashboard')" class="flex items-center gap-x-2">
-                    <AppLogo class="hidden h-6 xl:block" />
+                    <AppLogo class="hidden xl:block w-24" />
                 </Link>
 
                 <!-- Desktop Menu -->
