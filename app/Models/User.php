@@ -8,6 +8,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 
 class User extends Authenticatable
@@ -49,13 +50,11 @@ class User extends Authenticatable
      *
      * @return array<string, ValidationRule|array|string>
      */
-    public function rules(): array
+    public function rules($id = null): array
     {
-        return [
+        $base_rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'cpf' => 'required|cpf|unique:users',
             'phone' => 'required|string|min:11|max:16',
             'professional_type' => 'required|string|in:admin,manager,basic,primary,secondary,other',
             // crefito or other professional registration document
@@ -63,6 +62,24 @@ class User extends Authenticatable
             'address' => 'required|string|min:6',
             'city' => 'required|string|min:6',
         ];
+
+        if($id) {
+            return array_merge($base_rules, array(
+                'email' => [
+                    'required', 'string', 'email', 'max:255',
+                    Rule::unique('users', 'email')->ignore($id)
+                ],
+                'cpf' => [
+                    'required', 'cpf',
+                    Rule::unique('users', 'document')->ignore($id)
+                ],
+            ));
+        }
+
+        return array_merge($base_rules, [
+            'email' => 'required|string|email|max:255|unique:users',
+            'cpf' => 'required|cpf|unique:users',
+        ]);
     }
 
     /**

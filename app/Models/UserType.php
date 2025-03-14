@@ -12,7 +12,7 @@ class UserType extends Model
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    protected $table = 'usertypes';
+    protected $table = 'user_types';
     /**
      * The attributes that are mass assignable.
      *

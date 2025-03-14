@@ -11,7 +11,7 @@ import SettingsLayout from '@/layouts/settings/Layout.vue';
 const breadcrumbItems: BreadcrumbItem[] = [
     {
         title: 'Configurações de aparência',
-        href: '/settings/appearance',
+        href: '/configuracoes/aparencia',
     },
 ];
 </script>
