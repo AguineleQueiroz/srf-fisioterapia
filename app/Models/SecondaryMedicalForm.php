@@ -7,16 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class Patient extends Model
+class SecondaryMedicalForm extends Model
 {
     use HasFactory, Notifiable, HasRoles;
-
-    protected $table = 'patients';
-
-    protected $fillable = [
-        'name',
-        'birth_date',
-        'gender',
-        //...
-    ];
 }

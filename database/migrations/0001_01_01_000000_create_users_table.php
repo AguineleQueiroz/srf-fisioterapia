@@ -14,8 +14,6 @@ return new class extends Migration
         if (!Schema::hasTable('users')) {
             Schema::create('users', function (Blueprint $table) {
                 $table->id();
-                $table->unsignedBigInteger('user_type_id');
-                $table->foreign('user_type_id')->references('id')->on('user_types')->cascadeOnDelete();
                 $table->string('name');
                 $table->string('email')->unique();
                 $table->timestamp('email_verified_at')->nullable();
