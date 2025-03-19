@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Cassandra\Type\UserType;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -31,7 +30,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate((new \App\Models\User)->rules());
+        $validated = $request->validate((new User)->rules());
         $user = User::query()->create([
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -43,8 +42,9 @@ class RegisteredUserController extends Controller
             'address' => $validated['address'],
             'city' => $validated['city'],
             'password' => Hash::make($validated['password']),
-            'usertype_id' => (new \App\Models\UserType())->getTypeIdByName($validated['professional_type']),
         ]);
+        // attribute roles by user type
+        $user->assignRole($validated['professional_type']);
 
         event(new Registered($user));
 

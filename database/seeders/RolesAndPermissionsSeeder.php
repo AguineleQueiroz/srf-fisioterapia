@@ -20,10 +20,10 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Create permissions
         // patients
-        Permission::create(['name' => 'create-patient']);
-        Permission::create(['name' => 'update-patient']);
-        Permission::create(['name' => 'view-patient']);
-        Permission::create(['name' => 'delete-patient']);
+        Permission::create(['name' => 'create-basic-medical-form']);
+        Permission::create(['name' => 'update-basic-medical-form']);
+        Permission::create(['name' => 'view-basic-medical-form']);
+        Permission::create(['name' => 'delete-basic-medical-form']);
 
         // Primary medical forms
         Permission::create(['name' => 'create-primary-medical-form']);
@@ -51,23 +51,23 @@ class RolesAndPermissionsSeeder extends Seeder
         $manager->givePermissionTo([ 'create-users', 'view-users', 'update-users', 'delete-users' ]);
 
         $basic = Role::create(['name' => 'basic']);
-        $basic->givePermissionTo([ 'create-patient', 'update-patient', 'view-patient' ]);
+        $basic->givePermissionTo([ 'create-basic-medical-form', 'update-basic-medical-form', 'view-basic-medical-form' ]);
 
         $primary = Role::create(['name' => 'primary']);
         $primary->givePermissionTo([
-            'create-patient', 'update-patient', 'view-patient',
+            'create-basic-medical-form', 'update-basic-medical-form', 'view-basic-medical-form',
             'create-primary-medical-form', 'update-primary-medical-form', 'view-primary-medical-form'
         ]);
 
         $secondary = Role::create(['name' => 'secondary']);
         $secondary->givePermissionTo([
-            'create-patient', 'update-patient', 'view-patient',
+            'create-basic-medical-form', 'update-basic-medical-form', 'view-basic-medical-form',
             'create-secondary-medical-form', 'update-secondary-medical-form', 'view-secondary-medical-form'
         ]);
 
         $other = Role::create(['name' => 'other']);
         $other->givePermissionTo([
-            'create-patient', 'update-patient', 'view-patient'
+            'create-basic-medical-form', 'update-basic-medical-form', 'view-basic-medical-form'
         ]);
     }
 }

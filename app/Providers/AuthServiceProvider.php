@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Models\Patient;
+use App\Models\BasicMedicalForm;
 use App\Models\PrimaryMedicalForm;
 use App\Models\SecondaryMedicalForm;
 use App\Models\User;
-use App\Policies\PatientPolicy;
+use App\Policies\BasicMedicalFormPolicy;
 use App\Policies\PrimaryMedicalFormPolicy;
 use App\Policies\SecondaryMedicalFormPolicy;
 use App\Policies\UserPolicy;
@@ -21,7 +21,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         User::class => UserPolicy::class,
-        Patient::class => PatientPolicy::class,
+        BasicMedicalForm::class => BasicMedicalFormPolicy::class,
         PrimaryMedicalForm::class => PrimaryMedicalFormPolicy::class,
         SecondaryMedicalForm::class => SecondaryMedicalFormPolicy::class
     ];
