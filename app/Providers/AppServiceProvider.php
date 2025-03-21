@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
     }
 
     protected function validateCpf(string $cpf): bool {
-        $cpf = array_map('intval', str_split($cpf));
+        $cpf = array_map('intval', str_split(str_replace(['.', '-'], '', $cpf)));
 
         if (count($cpf) != 11 || count(array_unique($cpf)) === 1) {
             return false;

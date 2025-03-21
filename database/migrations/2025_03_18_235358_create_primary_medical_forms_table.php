@@ -11,29 +11,38 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if(!Schema::hasTable('primary_medical_form')){
-            Schema::create('primary_medical_form', function (Blueprint $table) {
+        if(!Schema::hasTable('primary_medical_forms')){
+            Schema::create('primary_medical_forms', function (Blueprint $table) {
                 $table->id();
 
                 // checkbox and textareas related
                 $table->boolean('pain')->default(false);
                 $table->text('pain_description')->nullable();
+
                 $table->boolean('disability')->default(false);
                 $table->text('disability_description')->nullable();
+
                 $table->boolean('musculoskeletal')->default(false);
                 $table->text('musculoskeletal_description')->nullable();
+
                 $table->boolean('neurological')->default(false);
                 $table->text('neurological_description')->nullable();
+
                 $table->boolean('urogynaecological')->default(false);
                 $table->text('urogynaecological_description')->nullable();
+
                 $table->boolean('cardiovascular')->default(false);
                 $table->text('cardiovascular_description')->nullable();
+
                 $table->boolean('respiratory')->default(false);
                 $table->text('respiratory_description')->nullable();
+
                 $table->boolean('oncological')->default(false);
                 $table->text('oncological_description')->nullable();
+
                 $table->boolean('pediatric')->default(false);
                 $table->text('pediatric_description')->nullable();
+
                 $table->boolean('multiple_conditions')->default(false);
                 $table->text('multiple_conditions_description')->nullable();
 
@@ -46,20 +55,18 @@ return new class extends Migration
                 $table->text('physiotherapeutic_diagnosis')->nullable();
 
                 /* activities the patient participates in */
-                $table->boolean('walking')->default(false);
-                $table->boolean('pilates_weight_training_functional')->default(false);
-                $table->boolean('sports_activity')->default(false);
-                $table->boolean('never_participated')->default(false);
-                $table->boolean('other_activities')->default(false);
-                $table->boolean('other_activities_description')->default(false);
+                $table->boolean('mova_se')->default(false);
+                $table->boolean('menos_dor_mais_saude')->default(false);
+                $table->boolean('peso_saudavel')->default(false);
+                $table->boolean('geracao_esporte')->default(false);
+                $table->boolean('none_alternatives')->default(false);
 
                 /* previous activities the patient participated in - prefix: prev (previous) */
-                $table->boolean('prev_walking')->default(false);
-                $table->boolean('prev_pilates_weight_training_functional')->default(false);
-                $table->boolean('prev_sports_activity')->default(false);
-                $table->boolean('prev_never_participated')->default(false);
-                $table->boolean('prev_other_activities')->default(false);
-                $table->boolean('prev_other_activities_description')->default(false);
+                $table->boolean('ra_mova_se')->default(false);
+                $table->boolean('ra_menos_dor_mais_saude')->default(false);
+                $table->boolean('ra_peso_saudavel')->default(false);
+                $table->boolean('ra_geracao_esporte')->default(false);
+                $table->boolean('ra_none_alternatives')->default(false);
 
                 $table->timestamps();
             });
@@ -71,8 +78,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        if(Schema::hasTable('primary_medical_form')){
-            Schema::dropIfExists('primary_medical_form');
+        if(Schema::hasTable('primary_medical_forms')){
+            Schema::dropIfExists('primary_medical_forms');
         }
     }
 };

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\City;
 use App\Models\User;
+use App\Models\UserType;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,13 +22,15 @@ class RegisteredUserController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('auth/Register');
+        return Inertia::render('auth/Register', [
+            'cities' => (new City)->cities(),
+            'userTypes' => (new UserType)->types(),
+        ]);
     }
 
     /**
      * Handle an incoming registration request.
      *
-     * @throws ValidationException
      */
     public function store(Request $request): RedirectResponse
     {

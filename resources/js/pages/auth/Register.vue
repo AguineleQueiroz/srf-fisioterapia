@@ -10,6 +10,21 @@ import { Head, useForm } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
 import { computed, watch } from 'vue';
 
+defineProps({
+    cities: {
+        id: Number,
+        name: String,
+        state_code: String,
+        active: Boolean
+    },
+    userTypes: {
+        id: Number,
+        type: String,
+        code: String,
+        active: Boolean
+    },
+});
+
 const form = useForm({
     name: '',
     email: '',
@@ -35,16 +50,19 @@ const documentRules = computed(() => {
         return {
             required: true,
             // 000000-A
-            pattern: /^\d{6}-[A-Za-z]$/
+            pattern: /^\d{6}-[A-Za-z]$/,
         };
     } else {
         return { required: false };
     }
 });
 
-watch(() => form.professional_type, (newValue) => {
-    if(newValue === 'basic') form.document = '';
-});
+watch(
+    () => form.professional_type,
+    (newValue) => {
+        if (newValue === 'basic') form.document = '';
+    },
+);
 
 const submit = () => {
     form.post(route('register'), {
@@ -61,7 +79,16 @@ const submit = () => {
             <div class="grid gap-6">
                 <div class="grid gap-2">
                     <Label for="name">Nome</Label>
-                    <Input id="name" type="text" required autofocus :tabindex="1" autocomplete="name" v-model="form.name" placeholder="Nome completo" />
+                    <Input
+                        id="name"
+                        type="text"
+                        required
+                        autofocus
+                        :tabindex="1"
+                        autocomplete="name"
+                        v-model="form.name"
+                        placeholder="Nome completo"
+                    />
                     <InputError :message="form.errors.name" />
                 </div>
 
@@ -78,36 +105,19 @@ const submit = () => {
                 </div>
 
                 <div class="grid gap-2">
-                    <Select v-model="form.professional_type"
-                            name="professional_type"
-                            :class="{ 'border-red-500': form.errors.professional_type }">
+                    <Select v-model="form.professional_type" name="professional_type" :class="{ 'border-red-500': form.errors.professional_type }">
                         <SelectTrigger>
                             <SelectValue placeholder="Profissional" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                <SelectItem value="admin">
-                                    Administrador do Sistema
-                                </SelectItem>
-                                <SelectItem value="manager">
-                                    Gerente de Sistema
-                                </SelectItem>
-                                <SelectItem value="basic">
-                                    Atendimento/Recepção
-                                </SelectItem>
-                                <SelectItem value="primary">
-                                    Atenção Primária
-                                </SelectItem>
-                                <SelectItem value="secondary">
-                                    Atenção Secundária
-                                </SelectItem>
-                                <SelectItem value="other">
-                                    Não sou fisioterapeuta
+                                <SelectItem v-for="type in userTypes" :key="type.id" :value="type.code">
+                                    {{ type.type }}
                                 </SelectItem>
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-                    <p v-if="form.errors.professional_type" class="text-red-500 text-sm">
+                    <p v-if="form.errors.professional_type" class="text-sm text-red-500">
                         {{ form.errors.professional_type }}
                     </p>
                 </div>
@@ -132,29 +142,32 @@ const submit = () => {
 
                 <div class="grid gap-2">
                     <Label for="address">Endereço</Label>
-                    <Input id="address" type="text" required :tabindex="2" autocomplete="address" v-model="form.address" placeholder="Avenida, 000, Bairro" />
+                    <Input
+                        id="address"
+                        type="text"
+                        required
+                        :tabindex="2"
+                        autocomplete="address"
+                        v-model="form.address"
+                        placeholder="Avenida, 000, Bairro"
+                    />
                     <InputError :message="form.errors.address" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Select v-model="form.city"
-                            name="city"
-                            :class="{ 'border-red-500': form.errors.city }">
+                    <Select v-model="form.city" name="city" :class="{ 'border-red-500': form.errors.city }">
                         <SelectTrigger>
                             <SelectValue placeholder="Cidade" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                <SelectItem value="presidente kubitschek">
-                                    Presidente Kubitschek
-                                </SelectItem>
-                                <SelectItem value="datas">
-                                    Datas
+                                <SelectItem v-for="city in cities" :key="city.id" :value="city.name.toLowerCase()">
+                                    {{ city.name }}
                                 </SelectItem>
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-                    <p v-if="form.errors.city" class="text-red-500 text-sm">
+                    <p v-if="form.errors.city" class="text-sm text-red-500">
                         {{ form.errors.city }}
                     </p>
                 </div>
@@ -187,7 +200,7 @@ const submit = () => {
                     <InputError :message="form.errors.password_confirmation" />
                 </div>
 
-                <Button type="submit"  :class="'hover:bg-teal-900'" class="mt-2 w-full" tabindex="5" :disabled="form.processing">
+                <Button type="submit"  class="mt-2 w-full hover:bg-teal-900" tabindex="5" :disabled="form.processing">
                     <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
                     Criar conta
                 </Button>

@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if(!Schema::hasTable('cities')) {
-            Schema::create('cities', function (Blueprint $table) {
+        if (!Schema::hasTable('user_types')) {
+            Schema::create('user_types', function (Blueprint $table) {
                 $table->id();
-                $table->string('name');
-                $table->string('state_code');
-                $table->boolean('active')->default(1);
+                $table->string('type');
+                $table->string('code');
+                $table->boolean('active')->default(true);
                 $table->timestamps();
             });
         }
@@ -27,8 +27,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        if(Schema::hasTable('cities')) {
-            Schema::dropIfExists('cities');
+        if (Schema::hasTable('user_types')) {
+            Schema::dropIfExists('user_types');
         }
     }
 };

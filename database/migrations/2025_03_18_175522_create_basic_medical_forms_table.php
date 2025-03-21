@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('basic_medical_form')) {
-            Schema::create('basic_medical_form', function (Blueprint $table) {
+        if (!Schema::hasTable('basic_medical_forms')) {
+            Schema::create('basic_medical_forms', function (Blueprint $table) {
                 $table->id();
                 $table->string('patient_name');
                 $table->string('cpf')->unique()->nullable();
@@ -40,8 +40,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        if (Schema::hasTable('basic_medical_form')) {
-            Schema::dropIfExists('basic_medical_form');
+        if (Schema::hasTable('basic_medical_forms')) {
+            Schema::dropIfExists('basic_medical_forms');
         }
     }
 };

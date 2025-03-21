@@ -43,19 +43,17 @@ class PrimaryMedicalForm extends Model
         'physiotherapeutic_diagnosis',
 
         // Activities the patient participates in
-        'walking',
-        'pilates_weight_training_functional',
-        'sports_activity',
-        'never_participated',
-        'other_activities',
-        'other_activities_description',
+        'mova_se',
+        'menos_dor_mais_saude',
+        'peso_saudavel',
+        'geracao_esporte',
+        'none_alternatives',
 
         // Previous activities the patient participated in (prefix: prev)
-        'prev_walking',
-        'prev_pilates_weight_training_functional',
-        'prev_sports_activity',
-        'prev_never_participated',
-        'prev_other_activities',
-        'prev_other_activities_description',
+        'ra_mova_se',
+        'ra_menos_dor_mais_saude',
+        'ra_peso_saudavel',
+        'ra_geracao_esporte',
+        'ra_none_alternatives',
     ];
 }
