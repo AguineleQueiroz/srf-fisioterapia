@@ -11,7 +11,6 @@ class MedicalFormsController extends Controller
 {
     public function index(): Response
     {
-        //dd((new MedicalForm)->medicalForms());
         return Inertia::render('Dashboard', [
             'medicalForms' => (new MedicalForm)->medicalForms(),
         ]);

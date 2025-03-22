@@ -21,3 +21,15 @@ withDefaults(defineProps<Props>(), {
         </AppContent>
     </AppShell>
 </template>
+
+<style scoped>
+* {
+    font-size: 15px;
+}
+
+h1 {
+    font-size: 18px;
+}
+
+
+</style>

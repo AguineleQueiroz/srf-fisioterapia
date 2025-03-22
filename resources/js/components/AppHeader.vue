@@ -18,7 +18,7 @@ import UserMenuContent from '@/components/UserMenuContent.vue';
 import { getInitials } from '@/composables/useInitials';
 import type { BreadcrumbItem, NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-vue-next';
+import { BookOpen, Folder, AlignJustify, Menu, Search } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 interface Props {
@@ -40,9 +40,9 @@ const activeItemStyles = computed(
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
-        href: '/dashboard',
-        icon: LayoutGrid,
+        title: 'Lista de Atendimentos',
+        href: '/home',
+        icon: AlignJustify ,
     },
 ];
 
@@ -113,7 +113,7 @@ const rightNavItems: NavItem[] = [
                 </Link>
 
                 <!-- Desktop Menu -->
-                <!-- <div class="hidden h-full lg:flex lg:flex-1">
+                 <div class="hidden h-full lg:flex lg:flex-1">
                     <NavigationMenu class="ml-10 flex h-full items-stretch">
                         <NavigationMenuList class="flex h-full items-stretch space-x-2">
                             <NavigationMenuItem v-for="(item, index) in mainNavItems" :key="index" class="relative flex h-full items-center">
@@ -127,12 +127,12 @@ const rightNavItems: NavItem[] = [
                                 </Link>
                                 <div
                                     v-if="isCurrentRoute(item.href)"
-                                    class="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"
+                                    class="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-teal-700"
                                 ></div>
                             </NavigationMenuItem>
                         </NavigationMenuList>
                     </NavigationMenu>
-                </div> -->
+                </div>
 
                 <div class="ml-auto flex items-center space-x-2">
                     <div class="relative flex items-center space-x-1">
