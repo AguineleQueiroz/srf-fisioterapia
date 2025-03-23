@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { ChevronDown } from 'lucide-vue-next';
 import Icon from '@/components/Icon.vue';
-import { computed } from 'vue';
-import { MedicalForm } from '@/types';
+import { computed, inject  } from 'vue';
+import { MedicalForm } from '@/types'
 
-defineProps<{
-    items: MedicalForm[];
-}>();
+const items = inject<MedicalForm[]>('items', []);
 
 const color = computed(
     ()=>{
@@ -22,7 +20,7 @@ const color = computed(
 
 <template>
     <tbody>
-        <tr v-for="item in items" :key="item.id" class="cursor-pointer border-b hover:bg-gray-100">
+        <tr v-for="item in items" :key="item.id" class="cursor-pointer border-b hover:bg-gray-100 even:bg-gray-50">
             <td class="p-4 flex justify-center">
                 <Icon name="circle" size="24" :color="color(item.priority)" stroke-width="1" />
             </td>

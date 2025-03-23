@@ -4,12 +4,19 @@ import TableData from '@/components/TableData.vue';
 import TableBody from '@/components/TableBody.vue';
 import TableHead from '@/components/TableHead.vue';
 import Pagination from '@/components/Pagination.vue';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, MedicalForm } from '@/types';
 import { Head } from '@inertiajs/vue3';
+import { provide, ref } from 'vue';
 
-defineProps({
-    medicalForms: Object
-})
+const props = defineProps<{ medicalForms: object }>();
+
+const items = ref<MedicalForm[]>(props.medicalForms.data || []);
+
+provide('items', items);
+
+const updateItems = (sortedItems: MedicalForm[]) => {
+    items.value = sortedItems;
+};
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -31,10 +38,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                         text
                     </div>
                     <TableData>
-                        <TableHead />
-                        <TableBody :items="medicalForms.data" />
+                        <TableHead @updateItems="updateItems"/>
+                        <TableBody />
                     </TableData>
-                    <pagination :elements="medicalForms"></pagination>
+                    <pagination :elements="props.medicalForms"></pagination>
                 </div>
             </div>
         </div>
