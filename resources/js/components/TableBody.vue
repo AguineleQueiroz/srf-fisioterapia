@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ChevronDown } from 'lucide-vue-next';
-import Icon from '@/components/Icon.vue';
 import { computed, inject  } from 'vue';
 import { MedicalForm } from '@/types'
+import Icon from '@/components/Icon.vue';
+import { ChevronDown } from 'lucide-vue-next';
 
 const items = inject<MedicalForm[]>('items', []);
 

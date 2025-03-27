@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { defineEmits, inject, ref } from 'vue';
+import { inject, ref } from 'vue';
 import FilterButton from '@/components/FilterButton.vue';
 
 const childRef = ref(null);
@@ -10,21 +10,18 @@ const emit = defineEmits(['updateItems']);
 
 const getIsAscending = () => {
     if (childRef.value) {
-        return childRef.value.isAscending
+        return childRef.value.isAscending;
     }
     return null;
 };
 
 const order = (attribute) => {
     const isAscending = getIsAscending();
-    console.log('value', isAscending)
     const sortedItems = [...items.value].sort((a, b) => {
         if (a[attribute] > b[attribute]) return isAscending ? 1 : -1;
         if (a[attribute] < b[attribute]) return isAscending ? -1 : 1;
         return 0;
     });
-
-    // Emitindo os itens ordenados para o Dashboard
     emit('updateItems', sortedItems);
 };
 </script>
@@ -35,15 +32,15 @@ const order = (attribute) => {
         <th class="flex justify-center p-4 text-xs font-[600] uppercase text-gray-500">
             <div class="flex items-center gap-4">
                 Prioridade
-                <FilterButton ref="childRef" attribute="priority" @filterSort="order('priority')"/>
+                <!-- <FilterButton ref="childRef" :attribute="'priority'" @filterSort="order('priority')"/>-->
             </div>
         </th>
         <th class="p-4 text-xs text-center font-[600] uppercase text-gray-500">Nome</th>
         <th class="p-4 text-xs text-center font-[600] uppercase text-gray-500">CPF</th>
         <th class="flex justify-center p-4 text-xs text-center font-[600] uppercase text-gray-500">
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
                 Data de registro
-                <FilterButton ref="childRef" attribute="priority" @filterSort="order('registered')"/>
+                <FilterButton ref="childRef" :attribute="'registered'" @filterSort="order('registered')"/>
             </div>
         </th>
         <th class="p-4 text-xs text-center font-[600] uppercase text-gray-500">Ver mais</th>

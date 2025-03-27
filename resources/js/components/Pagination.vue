@@ -12,7 +12,7 @@ const decodeHtml = (html: string) => {
 
 <template>
     <div id="pagination"
-         class="w-full flex justify-center border-t border-gray-100 pt-4 mt-4 items-center">
+         class="w-full flex justify-center pt-4 mt-4 items-center">
         <div class="flex flex-wrap -mb-1">
             <template v-for="(link, key) in elements.links" :key="key">
                 <div v-if="link.url === null"

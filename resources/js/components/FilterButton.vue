@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ArrowUpDown } from 'lucide-vue-next';
-import { defineEmits, ref, defineExpose } from 'vue';
+import { ref } from 'vue';
 
 const isAscending = ref(null);
 
@@ -11,7 +11,6 @@ const emit = defineEmits<{
 
 const sendEvent = (attribute: string) => {
     isAscending.value = !isAscending.value;
-    console.log(isAscending.value)
     emit('filterSort', attribute);
 };
 
