@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, ref } from 'vue';
+import { computed, inject } from 'vue';
 import { MedicalForm } from '@/types';
 import Icon from '@/components/Icon.vue';
 import { ChevronDown } from 'lucide-vue-next';
