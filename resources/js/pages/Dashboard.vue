@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-vue-next'
 import SwitchSlider from '@/components/SwitchSlider.vue';
 import { Button } from '@/components/ui/button';
+import TableRow from '@/components/TableRow.vue';
 
 const props = defineProps<{ medicalForms: object }>();
 
@@ -56,7 +57,9 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </div>
                     <TableData>
                         <TableHead @updateItems="updateItems"/>
-                        <TableBody />
+                        <TableBody>
+                            <TableRow />
+                        </TableBody>
                     </TableData>
                     <pagination :elements="props.medicalForms"></pagination>
                 </div>
