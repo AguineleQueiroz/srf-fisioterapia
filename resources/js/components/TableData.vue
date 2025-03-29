@@ -1,7 +1,3 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
     <div class="flex items-start justify-center">
         <div class="w-full bg-white shadow-sm overflow-hidden border rounded-sm">
@@ -11,5 +7,3 @@
         </div>
     </div>
 </template>
-
-<style scoped></style>

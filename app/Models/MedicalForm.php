@@ -14,7 +14,13 @@ class MedicalForm extends Model
 
     protected $table = 'medical_forms';
 
-    protected $appends = [ 'formatted_registered', 'formatted_cpf' ];
+    protected $appends = [
+        'formatted_registered',
+        'formatted_cpf',
+        'formatted_gender',
+        'formatted_birthdate',
+        'formatted_last_hospitalization'
+    ];
 
     protected $fillable = [
         'user_id',
@@ -61,6 +67,21 @@ class MedicalForm extends Model
                 . substr($cpf, 9, 2);
         }
         return '---';
+    }
+
+    public function getFormattedGenderAttribute(): string
+    {
+        return $this->attributes['gender'] === 'male' ? 'Masculino' : 'Feminino';
+    }
+
+    public function getFormattedBirthdateAttribute(): string
+    {
+        return Carbon::parse($this->attributes['birth_date'])->format('d/m/Y');
+    }
+
+    public function getFormattedLastHospitalizationAttribute(): string
+    {
+        return Carbon::parse($this->attributes['last_hospitalization'])->format('d/m/Y');
     }
 
 }

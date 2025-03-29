@@ -47,7 +47,3 @@ const order = (attribute) => {
     </tr>
     </thead>
 </template>
-
-<style scoped>
-
-</style>
