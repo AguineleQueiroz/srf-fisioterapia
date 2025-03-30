@@ -2,7 +2,10 @@
 import { computed, inject } from 'vue';
 import { MedicalForm } from '@/types';
 import Icon from '@/components/Icon.vue';
-import { ChevronDown } from 'lucide-vue-next';
+import { ChevronDown, LoaderCircle } from 'lucide-vue-next';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useForm } from '@inertiajs/vue3';
 
 const items = inject<MedicalForm[]>('items', []);
 
@@ -40,9 +43,11 @@ const calculateAge: string = (date: string) => {
 
 const toggleExpansiveRows = (trId: string) => {
     const el = document.getElementById(`tr-${trId}`);
+    const footerEl = document.getElementById(`tr-footer-${trId}`);
 
-    if (!el.classList.contains('hidden')) {
+    if (!el.classList.contains('hidden') && !footerEl.classList.contains('hidden')) {
         el.classList.add('hidden');
+        footerEl.classList.add('hidden');
         return;
     }
 
@@ -50,9 +55,23 @@ const toggleExpansiveRows = (trId: string) => {
         tr.classList.add('hidden');
     });
 
-    el.classList.remove('hidden');
-};
+    document.querySelectorAll('.expansive-tr-footer').forEach((tr) => {
+        tr.classList.add('hidden');
+    });
 
+    el.classList.remove('hidden');
+    footerEl.classList.remove('hidden');
+};
+// referral medical forms
+const form = useForm({
+    attention: '',
+});
+
+const submit = () => {
+    form.post(route('/referral'), {
+        onFinish: () => form.reset('attention'),
+    });
+};
 </script>
 
 <template>
@@ -144,6 +163,38 @@ const toggleExpansiveRows = (trId: string) => {
                             <span class="ms-1">{{item.doctor_name}}</span>
                         </div>
                     </div>
+                </div>
+            </td>
+        </tr>
+        <tr :id="'tr-footer-'+item.id" class="expansive-tr-footer hidden border-b">
+            <td></td>
+            <td colspan="4">
+                <div class="flex justify-between p-4">
+                    <Button name="edit_medical_form" class="rounded-sm px-4 hover:bg-teal-900">Editar</Button>
+
+                    <Button name="add_medical_form" class="rounded-sm px-4 hover:bg-teal-900">Adicionar Ficha</Button>
+
+                    <Button name="list_medical_forms" class="rounded-sm px-4 hover:bg-teal-900">Fichas do Paciente</Button>
+
+
+                    <form @submit.prevent="submit" class="flex items-center">
+                        <Select v-model="form.attention" name="attention" class="rounded-none" :class="{ 'border-red-500': form.errors.attention }">
+                            <SelectTrigger class="h-9 rounded-none rounded-l-md">
+                                <SelectValue placeholder="Atenção:" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectItem v-for="(type, index ) in ['primary', 'secondary']" :key="'type_'+index" :value="type">
+                                        {{ index === 0 ? 'Primária' : 'Secundária' }}
+                                    </SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                        <Button type="submit"  class="w-full hover:bg-teal-900 rounded-none rounded-r-md border-0"  :disabled="form.processing">
+                            <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
+                            Encaminhar
+                        </Button>
+                    </form>
                 </div>
             </td>
         </tr>
