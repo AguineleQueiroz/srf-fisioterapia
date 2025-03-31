@@ -87,42 +87,42 @@ const submit = () => {
                 <ChevronDown class="text-teal-700" />
             </td>
         </tr>
-        <tr :id="'tr-'+item.id" class="expansive-tr hidden border-b">
+        <tr :id="'tr-'+item.id" class="expansive-tr hidden">
             <td></td>
-            <td colspan="4">
+            <td colspan="4" class="border-b">
                 <!-- Informations -->
                 <div class="border border-t-0 border-r-0 p-4">
                     <h1 class="font-bold mb-2"> Informações: </h1>
                     <div class="flex flex-col flex-wrap max-h-28">
-                        <div>
+                        <div class="lg:w-[50%]">
                             <span class="font-[500]">Sexo: </span>
                             <span class="ms-1">{{item.formatted_gender}}</span>
                         </div>
-                        <div>
+                        <div class="lg:w-[50%]">
                             <span class="font-[500]">Data de nascimento: </span>
                             <span class="ms-1">{{item.formatted_birthdate}}</span>
                         </div>
-                        <div>
+                        <div class="lg:w-[50%]">
                             <span class="font-[500]">Idade: </span>
                             <span class="ms-1">{{ calculateAge(item.birth_date) }}</span>
                         </div>
-                        <div>
+                        <div class="lg:w-[50%]">
                             <span class="font-[500]">Endereço: </span>
                             <span class="ms-1">{{item.address}}</span>
                         </div>
-                        <div>
+                        <div class="lg:w-[50%]">
                             <span class="font-[500]">Número do cartão SUS: </span>
                             <span class="ms-1">{{item.card_sus}}</span>
                         </div>
-                        <div>
+                        <div class="lg:w-[50%]">
                             <span class="font-[500]">Telefone: </span>
                             <span class="ms-1">{{item.phone}}</span>
                         </div>
-                        <div>
+                        <div class="lg:w-[50%]">
                             <span class="font-[500]">Data do cadastro: </span>
                             <span class="ms-1">{{item.formatted_registered}}</span>
                         </div>
-                        <div>
+                        <div class="lg:w-[50%]">
                             <span class="font-[500]">Responsável pelo cadastro: </span>
                             <span class="ms-1">{{item.registered_by}}</span>
                         </div>
@@ -146,19 +146,19 @@ const submit = () => {
                 <div class="border border-t-0 border-r-0 border-b-0 p-4">
                     <h1 class="font-bold mb-2">Condições de Saúde: </h1>
                     <div class="flex flex-wrap">
-                        <div class="flex flex-col lg:w-[45%]">
+                        <div class="flex flex-col lg:w-[50%]">
                             <span class="font-[500]">Diagnóstico clínico: </span>
                             <span class="mb-2">{{item.diagnosis ?? '---'}}</span>
                         </div>
-                        <div class="lg:w-[45%]">
+                        <div class="lg:w-[50%]">
                             <span class="font-[500]">Última internação: </span>
                             <span class="ms-1">{{ item.formatted_last_hospitalization }}</span>
                         </div>
-                        <div class="flex flex-col lg:w-[45%]">
+                        <div class="flex flex-col lg:w-[50%]">
                             <span class="font-[500]">Comorbidades associadas: </span>
                             <span class="mb-2">{{item.comorbidity  ?? '---'}}</span>
                         </div>
-                        <div class="lg:w-[45%]">
+                        <div class="lg:w-[50%]">
                             <span class="font-[500]">Médico responsável: </span>
                             <span class="ms-1">{{item.doctor_name}}</span>
                         </div>
@@ -169,7 +169,7 @@ const submit = () => {
         <tr :id="'tr-footer-'+item.id" class="expansive-tr-footer hidden border-b">
             <td></td>
             <td colspan="4">
-                <div class="flex justify-between p-4">
+                <div class="flex justify-between p-4 border-l">
                     <Button name="edit_medical_form" class="rounded-sm px-4 hover:bg-teal-900">Editar</Button>
 
                     <Button name="add_medical_form" class="rounded-sm px-4 hover:bg-teal-900">Adicionar Ficha</Button>
