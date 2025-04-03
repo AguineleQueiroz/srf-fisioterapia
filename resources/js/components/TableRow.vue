@@ -77,13 +77,13 @@ const submit = () => {
 <template>
     <template v-for="item in items" :key="item.id">
         <tr class="cursor-pointer border-b hover:bg-gray-100">
-            <td class="flex justify-center p-4">
+            <td class="flex justify-center p-4 w-[162px]">
                 <Icon name="circle" size="24" :color="color(item.priority)" stroke-width="1" />
             </td>
-            <td class="p-4 text-center">{{ item.patient_name }}</td>
-            <td class="p-4 text-center">{{ item.formatted_cpf || '---' }}</td>
-            <td class="p-4 text-center">{{ item.formatted_registered }}</td>
-            <td class="flex justify-center p-4" @click="toggleExpansiveRows(item.id)">
+            <td class="p-4 text-center w-[454px]">{{ item.patient_name }}</td>
+            <td class="p-4 text-center w-[194px]">{{ item.formatted_cpf || '---' }}</td>
+            <td class="p-4 text-center w-[247px]">{{ item.formatted_registered }}</td>
+            <td class="flex justify-center p-4 w-[124px]" @click="toggleExpansiveRows(item.id)">
                 <ChevronDown class="text-teal-700" />
             </td>
         </tr>
@@ -93,7 +93,7 @@ const submit = () => {
                 <!-- Informations -->
                 <div class="border border-t-0 border-r-0 p-4">
                     <h1 class="font-bold mb-2"> Informações: </h1>
-                    <div class="flex flex-col flex-wrap max-h-28">
+                    <div class="flex flex-col flex-wrap max-h-32">
                         <div class="lg:w-[50%]">
                             <span class="font-[500]">Sexo: </span>
                             <span class="ms-1">{{item.formatted_gender}}</span>

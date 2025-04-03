@@ -28,22 +28,22 @@ const order = (attribute) => {
 
 <template>
     <thead>
-    <tr class="bg-gray-100 text-gray-700 border-b">
-        <th class="flex justify-center p-4 text-xs font-[600] uppercase text-gray-500">
-            <div class="flex items-center gap-4">
-                Prioridade
-                <!-- <FilterButton ref="childRef" :attribute="'priority'" @filterSort="order('priority')"/>-->
-            </div>
-        </th>
-        <th class="p-4 text-xs text-center font-[600] uppercase text-gray-500">Nome</th>
-        <th class="p-4 text-xs text-center font-[600] uppercase text-gray-500">CPF</th>
-        <th class="flex justify-center p-4 text-xs text-center font-[600] uppercase text-gray-500">
-            <div class="flex items-center gap-2">
-                Data de registro
-                <FilterButton ref="childRef" :attribute="'registered'" @filterSort="order('registered')"/>
-            </div>
-        </th>
-        <th class="p-4 text-xs text-center font-[600] uppercase text-gray-500">Ver mais</th>
-    </tr>
+        <tr class="bg-gray-100 text-gray-700 border-b">
+            <th class="flex justify-center p-4 text-xs font-[600] uppercase text-gray-500 w-[162px]">
+                <div class="flex items-center">
+                    Prioridade
+                    <!-- <FilterButton ref="childRef" :attribute="'priority'" @filterSort="order('priority')"/>-->
+                </div>
+            </th>
+            <th class="p-4 text-xs text-center font-[600] uppercase text-gray-500 w-[454px]">Nome</th>
+            <th class="p-4 text-xs text-center font-[600] uppercase text-gray-500 w-[194px]">CPF</th>
+            <th class="flex justify-center p-4 text-xs text-center font-[600] uppercase text-gray-500 w-[247px]">
+                <div class="flex items-center gap-2">
+                    Data de registro
+                    <FilterButton ref="childRef" :attribute="'registered'" @filterSort="order('registered')"/>
+                </div>
+            </th>
+            <th class="p-4 text-xs text-center font-[600] uppercase text-gray-500 w-[124px]">Ver mais</th>
+        </tr>
     </thead>
 </template>

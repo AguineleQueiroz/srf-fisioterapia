@@ -2,8 +2,8 @@
 
 import SwitchSlider from '@/components/SwitchSlider.vue';
 import { Search } from 'lucide-vue-next';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import ActionModal from '@/components/ActionModal.vue';
 </script>
 
 <template>
@@ -20,7 +20,7 @@ import { Input } from '@/components/ui/input';
             <p>Somente meus atendimentos</p>
         </div>
         <div class="flex w-full justify-end items-center">
-            <Button name="new_medical_form" class="rounded-sm px-4">Novo Atendimento</Button>
+            <ActionModal />
         </div>
     </div>
 </template>

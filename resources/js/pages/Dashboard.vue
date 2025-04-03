@@ -10,6 +10,7 @@ import { provide, ref } from 'vue';
 import TableRow from '@/components/TableRow.vue';
 import ActionBar from '@/components/ActionBar.vue';
 
+
 const props = defineProps<{ medicalForms: object }>();
 
 const items = ref<MedicalForm[]>(props.medicalForms.data || []);
