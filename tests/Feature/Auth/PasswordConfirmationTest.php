@@ -4,6 +4,7 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use JsonException;
 use Tests\TestCase;
 
 class PasswordConfirmationTest extends TestCase
@@ -14,16 +15,19 @@ class PasswordConfirmationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get('/confirm-password');
+        $response = $this->actingAs($user)->get('/confirmar-senha');
 
         $response->assertStatus(200);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function test_password_can_be_confirmed()
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post('/confirm-password', [
+        $response = $this->actingAs($user)->post('/confirmar-senha', [
             'password' => 'password',
         ]);
 
@@ -35,7 +39,7 @@ class PasswordConfirmationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post('/confirm-password', [
+        $response = $this->actingAs($user)->post('/confirmar-senha', [
             'password' => 'wrong-password',
         ]);
 

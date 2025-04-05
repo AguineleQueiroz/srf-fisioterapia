@@ -47,10 +47,10 @@ Route::middleware('auth')->group(function () {
         ->middleware('throttle:6,1')
         ->name('verification.send');
 
-    Route::get('confirmar-senhar', [ConfirmablePasswordController::class, 'show'])
+    Route::get('confirmar-senha', [ConfirmablePasswordController::class, 'show'])
         ->name('password.confirm');
 
-    Route::post('confirmar-senhar', [ConfirmablePasswordController::class, 'store']);
+    Route::post('confirmar-senha', [ConfirmablePasswordController::class, 'store']);
 
     Route::post('sair', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
