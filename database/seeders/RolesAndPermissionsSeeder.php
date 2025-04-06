@@ -44,28 +44,28 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'delete-users']);
 
         // Create roles and grant permissions
-        $admin = Role::create(['name' => 'admin']);
+        $admin = Role::create(['name' => 'admin', 'guard_name' => 'web']);
         $admin->givePermissionTo(Permission::all());
 
-        $manager = Role::create(['name' => 'manager']);
+        $manager = Role::create(['name' => 'manager', 'guard_name' => 'web']);
         $manager->givePermissionTo([ 'create-users', 'view-users', 'update-users', 'delete-users' ]);
 
-        $basic = Role::create(['name' => 'basic']);
+        $basic = Role::create(['name' => 'basic', 'guard_name' => 'web']);
         $basic->givePermissionTo([ 'create-basic-medical-form', 'update-basic-medical-form', 'view-basic-medical-form' ]);
 
-        $primary = Role::create(['name' => 'primary']);
+        $primary = Role::create(['name' => 'primary', 'guard_name' => 'web']);
         $primary->givePermissionTo([
             'create-basic-medical-form', 'update-basic-medical-form', 'view-basic-medical-form',
             'create-primary-medical-form', 'update-primary-medical-form', 'view-primary-medical-form'
         ]);
 
-        $secondary = Role::create(['name' => 'secondary']);
+        $secondary = Role::create(['name' => 'secondary', 'guard_name' => 'web']);
         $secondary->givePermissionTo([
             'create-basic-medical-form', 'update-basic-medical-form', 'view-basic-medical-form',
             'create-secondary-medical-form', 'update-secondary-medical-form', 'view-secondary-medical-form'
         ]);
 
-        $other = Role::create(['name' => 'other']);
+        $other = Role::create(['name' => 'other', 'guard_name' => 'web']);
         $other->givePermissionTo([
             'create-basic-medical-form', 'update-basic-medical-form', 'view-basic-medical-form'
         ]);

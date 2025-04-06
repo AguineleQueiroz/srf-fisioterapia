@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             CitySeeder::class,
             UserTypeSeeder::class,
             MedicalFormsSeeder::class,
+            RolesAndPermissionsSeeder::class,
         ]);
     }
 }
