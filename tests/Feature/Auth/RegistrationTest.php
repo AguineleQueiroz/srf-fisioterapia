@@ -18,23 +18,21 @@ class RegistrationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /*public function test_new_users_can_register()
+    public function test_new_users_can_register()
     {
         $response = $this->post('/cadastrar', [
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'password',
-            'password_confirmation' => 'password',
             'cpf' => '529.686.670-33',
-            'phone' => '36998333810',
             'professional_type' => null,
             'document' => '000000-A',
+            'phone' => '36998333810',
             'address' => 'Middle Street, 123',
-            'city' => 'Los Angeles',
-            'remember_token' => Str::random(10),
+            'city' => 'Los Angeles'
         ]);
 
         $this->assertAuthenticated();
         $response->assertRedirect(route('dashboard', absolute: false));
-    }*/
+    }
 }
