@@ -3,7 +3,7 @@
 import SwitchSlider from '@/components/SwitchSlider.vue';
 import { Search } from 'lucide-vue-next';
 import { Input } from '@/components/ui/input';
-import ActionModal from '@/components/ActionModal.vue';
+import NewMedicalFormModal from '@/components/NewMedicalFormModal.vue';
 </script>
 
 <template>
@@ -20,7 +20,7 @@ import ActionModal from '@/components/ActionModal.vue';
             <p>Somente meus atendimentos</p>
         </div>
         <div class="flex w-full justify-end items-center">
-            <ActionModal />
+            <NewMedicalFormModal />
         </div>
     </div>
 </template>
