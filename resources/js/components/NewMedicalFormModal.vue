@@ -7,8 +7,7 @@ import { Input } from '@/components/ui/input';
 import InputError from '@/components/InputError.vue';
 import RadioInput from '@/components/RadioInput.vue';
 import { DialogClose } from 'radix-vue';
-import {vMaska} from 'maska/vue'
-
+import { vMaska } from 'maska/vue';
 
 const form = useForm({
     patient_name: '',
@@ -28,30 +27,33 @@ const form = useForm({
     priority: '',
     registered: '', // capturar dinamicamente
 });
+
+const submit = () => {
+    form.post(route('medical-form'), {
+        onSuccess: () => form.reset(),
+    });
+};
 </script>
 
 <template>
-    <ActionModal
-        title="Novo Atendimento"
-        triggerButton="Novo Atendimento"
-    >
+    <ActionModal title="Informações do Atendimento" triggerButton="Novo Atendimento">
         <!--modal content-->
         <form @submit.prevent="submit" class="grid grid-cols-1 gap-y-6">
             <div class="grid grid-cols-3 gap-6">
                 <!-- patient name -->
-                <div class="grid col-span-2 gap-2">
-                    <Label for="name">Paciente</Label>
+                <div class="col-span-2 grid gap-2">
+                    <Label for="patient_name">Paciente</Label>
                     <Input
-                        id="name"
+                        id="patient_name"
                         type="text"
                         required
                         autofocus
                         :tabindex="1"
-                        autocomplete="name"
-                        v-model="form.name"
+                        autocomplete="patient_name"
+                        v-model="form.patient_name"
                         placeholder="ex.: João da Silva"
                     />
-                    <InputError :message="form.errors.name" />
+                    <InputError :message="form.errors.patient_name" />
                 </div>
                 <!-- cpf -->
                 <div class="grid gap-2">
@@ -61,6 +63,7 @@ const form = useForm({
                         type="text"
                         required
                         autofocus
+                        :tabindex="2"
                         autocomplete="cpf"
                         v-model="form.cpf"
                         placeholder="ex.: 000.000.000-00"
@@ -72,44 +75,19 @@ const form = useForm({
 
             <div class="grid grid-cols-3 gap-6">
                 <!-- gender -->
-                <div class="grid gap-2">
-                    <span class="text-[14px] font-[500]">Sexo</span>
+                <div>
+                    <p class="text-[14px] font-[500] mb-2">Sexo</p>
                     <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <RadioInput
-                                label="Feminino"
-                                htmlfor="female"
-                                id="female"
-                                value="female"
-                                bgColor="teal"
-                                v-model="form.gender"
-                            />
-                        </div>
+                        <RadioInput :tabindex="3" label="Feminino" htmlfor="female" id="female" value="female" bgColor="teal" v-model="form.gender" />
 
-                        <div>
-                            <RadioInput
-                                label="Masculino"
-                                htmlfor="male"
-                                id="male"
-                                value="male"
-                                bgColor="teal"
-                                v-model="form.gender"
-                            />
-                        </div>
+                        <RadioInput :tabindex="4" label="Masculino" htmlfor="male" id="male" value="male" bgColor="teal" v-model="form.gender" />
                     </div>
                     <InputError :message="form.errors.gender" />
                 </div>
                 <!-- birth date -->
                 <div class="grid gap-2">
                     <Label for="birth_date">Data de nascimento</Label>
-                    <Input
-                        id="birth_date"
-                        type="date"
-                        required
-                        autofocus
-                        autocomplete="birth_date"
-                        v-model="form.birth_date"
-                    />
+                    <Input id="birth_date" type="date" required autofocus :tabindex="5" autocomplete="birth_date" v-model="form.birth_date" />
                     <InputError :message="form.errors.birth_date" />
                 </div>
                 <!-- sus card name -->
@@ -120,6 +98,7 @@ const form = useForm({
                         type="text"
                         required
                         autofocus
+                        :tabindex="6"
                         autocomplete="card_sus"
                         v-model="form.card_sus"
                         placeholder="ex.: 000.000.000-00"
@@ -131,13 +110,14 @@ const form = useForm({
 
             <div class="grid grid-cols-3 gap-6">
                 <!-- address -->
-                <div class="grid col-span-2 gap-2">
+                <div class="col-span-2 grid gap-2">
                     <Label for="address">Endereço</Label>
                     <Input
                         id="address"
                         type="text"
                         required
                         autofocus
+                        :tabindex="7"
                         autocomplete="address"
                         v-model="form.address"
                         placeholder="ex.: Rua das Flores, 123"
@@ -152,6 +132,7 @@ const form = useForm({
                         type="text"
                         required
                         autofocus
+                        :tabindex="8"
                         autocomplete="phone"
                         v-model="form.phone"
                         placeholder="ex.: (00) 00000-0000"
@@ -169,6 +150,7 @@ const form = useForm({
                         id="diagnosis"
                         required
                         autofocus
+                        :tabindex="9"
                         autocomplete="diagnosis"
                         v-model="form.diagnosis"
                         placeholder="Descrição"
@@ -182,6 +164,7 @@ const form = useForm({
                         id="comorbidity"
                         required
                         autofocus
+                        :tabindex="10"
                         autocomplete="comorbidity"
                         v-model="form.comorbidity"
                         placeholder="Descrição"
@@ -192,41 +175,38 @@ const form = useForm({
 
             <div class="grid grid-cols-3">
                 <!-- priority -->
-                <div class="grid col-span-2 gap-2">
-                    <span class="text-[14px] font-[500]">Prioridade</span>
-                    <div class=" grid grid-cols-3">
-                        <div>
-                            <RadioInput
-                                label="Alta prioridade"
-                                htmlfor="high"
-                                id="high"
-                                value="high"
-                                bgColor="red"
-                                v-model="form.priority"
-                            />
-                        </div>
+                <div class="col-span-2 mr-6">
+                    <p class="text-[14px] font-[500] mb-2">Prioridade</p>
+                    <div class="grid grid-cols-3 gap-3">
+                        <RadioInput
+                            :tabindex="11"
+                            label="Alta prioridade"
+                            htmlfor="high"
+                            id="high"
+                            value="high"
+                            bgColor="red"
+                            v-model="form.priority"
+                        />
+                        <RadioInput
+                            :tabindex="12"
+                            label="Média prioridade"
+                            htmlfor="medium"
+                            id="medium"
+                            value="medium"
+                            bgColor="amber"
+                            v-model="form.priority"
+                        />
+                        <RadioInput
+                            :tabindex="13"
+                            label="Baixa prioridade"
+                            htmlfor="low"
+                            id="low"
+                            value="low"
+                            bgColor="teal"
+                            v-model="form.priority"
+                        />
 
-                        <div>
-                            <RadioInput
-                                label="Média prioridade"
-                                htmlfor="medium"
-                                id="medium"
-                                value="medium"
-                                bgColor="amber"
-                                v-model="form.priority"
-                            />
-                        </div>
-
-                        <div>
-                            <RadioInput
-                                label="Baixa prioridade"
-                                htmlfor="low"
-                                id="low"
-                                value="low"
-                                bgColor="teal"
-                                v-model="form.priority"
-                            />
-                        </div>
+                        <InputError :message="form.errors.priority" />
                     </div>
                     <InputError :message="form.errors.priority" />
                 </div>
@@ -238,12 +218,14 @@ const form = useForm({
                         type="date"
                         required
                         autofocus
+                        :tabindex="14"
                         autocomplete="last_hospitalization"
                         v-model="form.last_hospitalization"
                     />
                     <InputError :message="form.errors.last_hospitalization" />
                 </div>
             </div>
+
             <div class="grid grid-cols-2 gap-6">
                 <!-- ubs name -->
                 <div class="grid gap-2">
@@ -253,6 +235,7 @@ const form = useForm({
                         type="text"
                         required
                         autofocus
+                        :tabindex="16"
                         autocomplete="primary_care_clinic"
                         v-model="form.primary_care_clinic"
                         placeholder="ex.: UBS"
@@ -267,6 +250,7 @@ const form = useForm({
                         type="text"
                         required
                         autofocus
+                        :tabindex="17"
                         autocomplete="doctor_name"
                         v-model="form.doctor_name"
                         placeholder="ex.: José da Silva"
@@ -276,12 +260,11 @@ const form = useForm({
             </div>
             <!-- Dynamics fields - backend -->
             <!-- acs name -->
-            <div class="grid gap-2 hidden">
+            <div class="grid hidden gap-2">
                 <Label for="community_health_worker">ACS Responsável</Label>
                 <Input
                     id="community_health_worker"
                     type="text"
-                    required
                     autofocus
                     autocomplete="community_health_worker"
                     v-model="form.community_health_worker"
@@ -290,32 +273,30 @@ const form = useForm({
                 <InputError :message="form.errors.community_health_worker" />
             </div>
             <!-- registered date -->
-            <div class="grid gap-2 hidden">
+            <div class="grid hidden gap-2">
                 <Label for="registered">Data de cadastro</Label>
-                <Input
-                    id="registered"
-                    type="date"
-                    required
-                    autofocus
-                    autocomplete="registered"
-                    v-model="form.registered"
-                />
+                <Input id="registered" type="date" autofocus autocomplete="registered" v-model="form.registered" />
                 <InputError :message="form.errors.registered" />
             </div>
             <!--submit modal button-->
-            <div class="mt-[25px] flex justify-end">
+            <div class="mt-[25px] flex justify-end gap-6">
                 <DialogClose as-child>
                     <button
-                        class="bg-teal-700 text-white text-[14px] font-[500] hover:bg-teal-800 inline-flex h-[35px] items-center justify-center rounded-sm px-3 focus:outline-none"
+                        type="reset"
+                        class="text-dark inline-flex h-[35px] items-center justify-center rounded-sm bg-gray-300 px-3 text-[14px] font-[500] hover:bg-gray-400 focus:outline-none"
                     >
-                        Save changes
+                        Cancelar
                     </button>
                 </DialogClose>
+                <button
+                    type="submit"
+                    class="inline-flex h-[35px] items-center justify-center rounded-sm bg-teal-700 px-3 text-[14px] font-[500] text-white hover:bg-teal-800 focus:outline-none"
+                >
+                    Save changes
+                </button>
             </div>
         </form>
     </ActionModal>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

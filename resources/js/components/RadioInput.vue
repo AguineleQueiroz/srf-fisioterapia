@@ -29,7 +29,7 @@ const bgColorMap = {
     blue: 'peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-blue-500',
     teal: 'peer-checked:border-teal-500 peer-checked:bg-teal-500 peer-checked:text-teal-500',
     green: 'peer-checked:border-green-500 peer-checked:bg-green-500 peer-checked:text-green-500',
-    indigo: 'peer-checked:border-indigo-500 peer-checked:bg-indigo-500 peer-checked:text-indigo-500'
+    indigo: 'peer-checked:border-indigo-500 peer-checked:bg-indigo-500 peer-checked:text-indigo-500',
 };
 
 const textColorMap = {
@@ -38,7 +38,7 @@ const textColorMap = {
     blue: 'peer-checked:text-blue-500',
     teal: 'peer-checked:text-teal-500',
     green: 'peer-checked:text-green-500',
-    indigo: 'peer-checked:text-indigo-500'
+    indigo: 'peer-checked:text-indigo-500',
 };
 
 const selectedColorClass = computed(() => {
@@ -51,28 +51,11 @@ const selectedTextColorClass = computed(() => {
 </script>
 
 <template>
-    <label :for="htmlfor" class="flex items-center gap-2 cursor-pointer">
-        <input
-            type="radio"
-            :id="id"
-            :value="value"
-            :checked="checked"
-            @change="updateValue"
-            class="peer hidden"
-        />
-        <span
-            :class="cn(
-        'h-4 w-4 rounded-full border-2 border-gray-400 transition-colors',
-        selectedColorClass
-      )"
-        ></span>
-        <span
-            :class="cn(
-        'text-[14px] font-[500] transition-colors',
-        selectedTextColorClass
-      )"
-        >
-      {{ label }}
-    </span>
+    <label :for="htmlfor" class="flex cursor-pointer items-center gap-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm">
+        <input type="radio" :id="id" :value="value" :checked="checked" @change="updateValue" class="peer hidden" />
+        <span :class="cn('h-4 w-4 rounded-full border-2 border-gray-400 transition-colors', selectedColorClass)"></span>
+        <span :class="cn('text-[14px] font-[500] transition-colors', selectedTextColorClass)">
+            {{ label }}
+        </span>
     </label>
 </template>
