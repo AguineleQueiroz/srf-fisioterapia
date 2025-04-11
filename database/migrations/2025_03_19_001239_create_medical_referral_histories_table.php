@@ -14,14 +14,9 @@ return new class extends Migration
         if(!Schema::hasTable('medical_referral_histories')){
             Schema::create('medical_referral_histories', function (Blueprint $table) {
                 $table->id();
-
-                $table->foreignId('user_id');
-                $table->foreignId('medical_form_id');
-                $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-                $table->foreign('medical_form_id')->references('id')->on('medical_forms')->cascadeOnDelete();
-
+                $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+                $table->foreignId('basic_medical_form_id')->constrained('basic_medical_forms')->cascadeOnDelete();
                 $table->string('referral');
-
                 $table->timestamps();
             });
         }

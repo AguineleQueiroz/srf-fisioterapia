@@ -14,6 +14,7 @@ return new class extends Migration
         if (!Schema::hasTable('basic_medical_forms')) {
             Schema::create('basic_medical_forms', function (Blueprint $table) {
                 $table->id();
+                $table->ulid()->unique();
                 $table->string('patient_name');
                 $table->string('cpf')->unique()->nullable();
                 $table->date('birth_date');

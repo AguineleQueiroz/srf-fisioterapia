@@ -8,7 +8,6 @@ use Faker\Factory as Faker;
 use App\Models\BasicMedicalForm;
 use App\Models\PrimaryMedicalForm;
 use App\Models\SecondaryMedicalForm;
-use App\Models\MedicalForm;
 
 class MedicalFormsSeeder extends Seeder
 {
@@ -17,7 +16,6 @@ class MedicalFormsSeeder extends Seeder
         $faker = Faker::create('pt_BR');
 
         for ($i = 0; $i < 10; $i++) {
-            // Basic Medical Form
             $cpf = rand(0, 1) ? $this->generateValidCPF() : null;
             $basicForm = BasicMedicalForm::create([
                 'patient_name' => $faker->name,
@@ -38,66 +36,66 @@ class MedicalFormsSeeder extends Seeder
                 'registered' => $faker->date()
             ]);
 
-            // Primary Medical Form
-            $primaryData = [
-                'pain', 'disability', 'musculoskeletal', 'neurological', 'urogynaecological',
-                'cardiovascular', 'respiratory', 'oncological', 'pediatric', 'multiple_conditions'
-            ];
+            $primaryFormsCount = rand(1, 3);
 
-            $primaryAttributes = [];
-            foreach ($primaryData as $field) {
-                $primaryAttributes[$field] = (bool)rand(0, 1);
-                if ($primaryAttributes[$field]) {
-                    $primaryAttributes[$field . '_description'] = $faker->text(145);
+            for ($j = 0; $j < $primaryFormsCount; $j++) {
+                $primaryData = [
+                    'pain', 'disability', 'musculoskeletal', 'neurological', 'urogynaecological',
+                    'cardiovascular', 'respiratory', 'oncological', 'pediatric', 'multiple_conditions'
+                ];
+
+                $primaryAttributes = [
+                    'basic_medical_form_id' => $basicForm->id // Adiciona a chave estrangeira
+                ];
+
+                foreach ($primaryData as $field) {
+                    $primaryAttributes[$field] = (bool)rand(0, 1);
+                    if ($primaryAttributes[$field]) {
+                        $primaryAttributes[$field . '_description'] = $faker->text(145);
+                    }
                 }
+
+                $activities = [
+                    'mova_se', 'menos_dor_mais_saude', 'peso_saudavel', 'geracao_esporte', 'none_alternatives',
+                    'ra_mova_se', 'ra_menos_dor_mais_saude', 'ra_peso_saudavel', 'ra_geracao_esporte', 'ra_none_alternatives'
+                ];
+
+                foreach ($activities as $activity) {
+                    $primaryAttributes[$activity] = (bool)rand(0, 1);
+                }
+
+                $primaryAttributes += [
+                    'complaint' => $faker->optional()->text(200),
+                    'physical_exam_findings' => $faker->optional()->text(200),
+                    'standardized_tests' => $faker->optional()->text(200),
+                    'functional_condition' => $faker->optional()->text(200),
+                    'environmental_factors' => $faker->optional()->text(200),
+                    'physiotherapeutic_diagnosis' => $faker->optional()->text(200),
+                ];
+
+                PrimaryMedicalForm::create($primaryAttributes);
             }
 
-            $activities = [
-                'mova_se', 'menos_dor_mais_saude', 'peso_saudavel', 'geracao_esporte', 'none_alternatives',
-                'ra_mova_se', 'ra_menos_dor_mais_saude', 'ra_peso_saudavel', 'ra_geracao_esporte', 'ra_none_alternatives'
-            ];
+            $secondaryFormsCount = rand(0, 2);
 
-            foreach ($activities as $activity) {
-                $primaryAttributes[$activity] = (bool)rand(0, 1);
+            for ($k = 0; $k < $secondaryFormsCount; $k++) {
+                SecondaryMedicalForm::create([
+                    'basic_medical_form_id' => $basicForm->id, // Adiciona a chave estrangeira
+                    'functional_condition' => $faker->optional()->text(200),
+                    'offered_treatment' => $faker->optional()->text(200),
+                    'functional_progress' => $faker->optional()->text(200),
+                    'sessions' => (string)rand(1, 50),
+                    'attendance' => (string)rand(1, 50),
+                    'personal_environmental_condition' => $faker->optional()->text(200),
+                    'physiotherapeutic_diagnosis' => $faker->optional()->text(200),
+                    'criteria' => $faker->optional()->text(200),
+                    'justification' => $faker->optional()->text(200),
+                ]);
             }
-
-            $primaryAttributes += [
-                'complaint' => $faker->optional()->text(200),
-                'physical_exam_findings' => $faker->optional()->text(200),
-                'standardized_tests' => $faker->optional()->text(200),
-                'functional_condition' => $faker->optional()->text(200),
-                'environmental_factors' => $faker->optional()->text(200),
-                'physiotherapeutic_diagnosis' => $faker->optional()->text(200),
-            ];
-
-            $primaryForm = PrimaryMedicalForm::create($primaryAttributes);
-
-            // Secondary Medical Form
-            $secondaryForm = SecondaryMedicalForm::create([
-                'functional_condition' => $faker->optional()->text(200),
-                'offered_treatment' => $faker->optional()->text(200),
-                'functional_progress' => $faker->optional()->text(200),
-                'sessions' => (string)rand(1, 50),
-                'attendance' => (string)rand(1, 50),
-                'personal_environmental_condition' => $faker->optional()->text(200),
-                'physiotherapeutic_diagnosis' => $faker->optional()->text(200),
-                'criteria' => $faker->optional()->text(200),
-                'justification' => $faker->optional()->text(200),
-            ]);
-
-            // Medical Form
-            MedicalForm::create([
-                'user_id' => 1,
-                'basic_medical_form_id' => $basicForm->id,
-                'primary_medical_form_id' => $primaryForm->id,
-                'secondary_medical_form_id' => $secondaryForm->id,
-                'referral' => $faker->optional()->text(50),
-                'city' => $faker->city
-            ]);
         }
     }
 
-    private function generateValidCPF()
+    private function generateValidCPF(): string
     {
         $n = [];
         for ($i = 0; $i < 9; $i++) {
@@ -108,7 +106,7 @@ class MedicalFormsSeeder extends Seeder
         return implode('', $n);
     }
 
-    private function calculateCPFCheckDigit($digits)
+    private function calculateCPFCheckDigit($digits): int
     {
         $sum = 0;
         $weight = count($digits) + 1;

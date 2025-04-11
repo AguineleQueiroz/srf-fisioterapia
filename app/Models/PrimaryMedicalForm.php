@@ -4,7 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class PrimaryMedicalForm extends Model
 {
@@ -56,4 +59,22 @@ class PrimaryMedicalForm extends Model
         'ra_geracao_esporte',
         'ra_none_alternatives',
     ];
+
+    public function basicMedicalForms(): BelongsTo
+    {
+        return $this->belongsTo(BasicMedicalForm::class, 'basic_medical_form_id');
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->ulid = (string) Str::ulid();
+        });
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'ulid';
+    }
 }

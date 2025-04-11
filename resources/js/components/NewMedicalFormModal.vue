@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage  } from '@inertiajs/vue3';
 import ActionModal from '@/components/ActionModal.vue';
 import TextArea from '@/components/TextArea.vue';
 import { Label } from '@/components/ui/label';
@@ -9,6 +9,7 @@ import RadioInput from '@/components/RadioInput.vue';
 import { DialogClose } from 'radix-vue';
 import { vMaska } from 'maska/vue';
 
+const user = usePage().props.auth.user
 const form = useForm({
     patient_name: '',
     gender: '',
@@ -22,10 +23,10 @@ const form = useForm({
     diagnosis: '',
     comorbidity: '',
     last_hospitalization: '',
-    registered_by: '', // adicionar dinamicamente pelo auth::id
+    registered_by: user.name,
     doctor_name: '',
     priority: '',
-    registered: '', // capturar dinamicamente
+    registered: new Intl.DateTimeFormat('en-CA').format(new Date()),
 });
 
 const submit = () => {
@@ -226,7 +227,7 @@ const submit = () => {
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-6">
+            <div class="grid grid-cols-3 gap-6">
                 <!-- ubs name -->
                 <div class="grid gap-2">
                     <Label for="primary_care_clinic">Nome da UBS</Label>
@@ -242,6 +243,20 @@ const submit = () => {
                     />
                     <InputError :message="form.errors.primary_care_clinic" />
                 </div>
+                <!-- acs name -->
+                <div class="grid gap-2">
+                    <Label for="community_health_worker">ACS Responsável</Label>
+                    <Input
+                        id="community_health_worker"
+                        type="text"
+                        autofocus
+                        :tabindex="17"
+                        autocomplete="community_health_worker"
+                        v-model="form.community_health_worker"
+                        placeholder="ex.: Joana de Souza"
+                    />
+                    <InputError :message="form.errors.community_health_worker" />
+                </div>
                 <!-- doctor name -->
                 <div class="grid gap-2">
                     <Label for="doctor_name">Médico Responsável</Label>
@@ -250,7 +265,7 @@ const submit = () => {
                         type="text"
                         required
                         autofocus
-                        :tabindex="17"
+                        :tabindex="18"
                         autocomplete="doctor_name"
                         v-model="form.doctor_name"
                         placeholder="ex.: José da Silva"
@@ -259,19 +274,6 @@ const submit = () => {
                 </div>
             </div>
             <!-- Dynamics fields - backend -->
-            <!-- acs name -->
-            <div class="grid hidden gap-2">
-                <Label for="community_health_worker">ACS Responsável</Label>
-                <Input
-                    id="community_health_worker"
-                    type="text"
-                    autofocus
-                    autocomplete="community_health_worker"
-                    v-model="form.community_health_worker"
-                    placeholder="ex.: Joana de Souza"
-                />
-                <InputError :message="form.errors.community_health_worker" />
-            </div>
             <!-- registered date -->
             <div class="grid hidden gap-2">
                 <Label for="registered">Data de cadastro</Label>

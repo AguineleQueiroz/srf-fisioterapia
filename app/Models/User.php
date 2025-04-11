@@ -8,6 +8,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Spatie\Permission\Traits\HasRoles;
@@ -93,5 +94,18 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->ulid = (string) Str::ulid();
+        });
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'ulid';
     }
 }

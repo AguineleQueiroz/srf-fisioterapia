@@ -14,7 +14,7 @@ return new class extends Migration
         if(!Schema::hasTable('primary_medical_forms')){
             Schema::create('primary_medical_forms', function (Blueprint $table) {
                 $table->id();
-
+                $table->ulid()->unique();
                 // checkbox and textareas related
                 $table->boolean('pain')->default(false);
                 $table->text('pain_description')->nullable();
@@ -68,6 +68,10 @@ return new class extends Migration
                 $table->boolean('ra_geracao_esporte')->default(false);
                 $table->boolean('ra_none_alternatives')->default(false);
 
+                /* foreign key to basic medical form related */
+                $table->foreignId('basic_medical_form_id')
+                    ->constrained('basic_medical_forms')
+                    ->cascadeOnDelete();
                 $table->timestamps();
             });
         }

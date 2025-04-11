@@ -3,22 +3,32 @@
 namespace App\Http\Controllers\Srf;
 
 use App\Http\Controllers\Controller;
-use App\Models\MedicalForm;
-use Illuminate\Http\Request;
+use App\Http\Requests\Srf\BasicMedicalFormRequest;
+use App\Models\BasicMedicalForm;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 use Nette\NotImplementedException;
 
 class MedicalFormsController extends Controller
 {
+    protected BasicMedicalForm $basicMedicalFormInstance;
+
+    public function __construct(BasicMedicalForm $basicMedicalFormInstance) {
+        $this->basicMedicalFormInstance = $basicMedicalFormInstance;
+    }
     public function index(): Response
     {
         return Inertia::render('Dashboard', [
-            'medicalForms' => (new MedicalForm)->medicalForms(),
+            'medicalForms' => (new BasicMedicalForm)->basicMedicalForms(),
         ]);
     }
 
-    public function store(Request $request): Response {
-        throw new NotImplementedException();
+    public function store(BasicMedicalFormRequest $request): Response|RedirectResponse
+    {
+        $basicMedicalForm = $this->basicMedicalFormInstance->create($request->validated());
+        return $basicMedicalForm
+            ? to_route('home')->with('success', 'Atendimento cadastrado.')
+            : back()->with('erro', 'Dados do atendimento não puderam ser salvos.');
     }
 }

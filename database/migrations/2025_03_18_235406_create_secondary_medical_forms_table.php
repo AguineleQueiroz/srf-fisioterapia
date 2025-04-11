@@ -14,6 +14,7 @@ return new class extends Migration
         if(!Schema::hasTable('secondary_medical_forms')){
             Schema::create('secondary_medical_forms', function (Blueprint $table) {
                 $table->id();
+                $table->ulid()->unique();
 
                 $table->text('functional_condition')->nullable();
                 $table->text('offered_treatment')->nullable();
@@ -24,6 +25,11 @@ return new class extends Migration
                 $table->text('physiotherapeutic_diagnosis')->nullable();
                 $table->text('criteria')->nullable();
                 $table->text('justification')->nullable();
+
+                /* foreign key to basic medical form related */
+                $table->foreignId('basic_medical_form_id')
+                    ->constrained('basic_medical_forms')
+                    ->cascadeOnDelete();
 
                 $table->timestamps();
             });
