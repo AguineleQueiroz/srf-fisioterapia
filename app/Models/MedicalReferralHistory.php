@@ -6,6 +6,7 @@ use App\Models\Scopes\TenantScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 class MedicalReferralHistory extends Model
 {
@@ -26,8 +27,12 @@ class MedicalReferralHistory extends Model
         return $this->belongsTo(Tenant::class);
     }
 
-    protected static function booted(): void
+    protected static function boot(): void
     {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->ulid = (string) Str::ulid();
+        });
         static::addGlobalScope(new TenantScope);
     }
 }
