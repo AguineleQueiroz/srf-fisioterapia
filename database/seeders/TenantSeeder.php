@@ -6,14 +6,14 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CitySeeder extends Seeder
+class TenantSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('cities')->insert([
+        DB::table('tenants')->insert([
             [
                 'name' => 'Datas',
                 'state_code' => 'MG',

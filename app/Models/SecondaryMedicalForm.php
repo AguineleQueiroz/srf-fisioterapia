@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\TenantScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,11 +25,17 @@ class SecondaryMedicalForm extends Model
         'physiotherapeutic_diagnosis',
         'criteria',
         'justification',
+        'tenant_id'
     ];
 
     public function basicMedicalForms(): BelongsTo
     {
         return $this->belongsTo(BasicMedicalForm::class, 'basic_medical_form_id');
+    }
+
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
     }
 
     protected static function boot(): void
@@ -37,6 +44,7 @@ class SecondaryMedicalForm extends Model
         static::creating(function ($model) {
             $model->ulid = (string) Str::ulid();
         });
+        static::addGlobalScope(new TenantScope);
     }
 
     public function getRouteKeyName(): string

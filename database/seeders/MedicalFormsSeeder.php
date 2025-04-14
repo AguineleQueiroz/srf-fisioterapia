@@ -33,7 +33,8 @@ class MedicalFormsSeeder extends Seeder
                 'registered_by' => $faker->name,
                 'doctor_name' => $faker->name,
                 'priority' => $faker->randomElement(['low', 'medium', 'high']),
-                'registered' => $faker->date()
+                'registered' => $faker->date(),
+                'tenant_id' => $faker->randomElement(['1', '2']),
             ]);
 
             $primaryFormsCount = rand(1, 3);
@@ -71,6 +72,7 @@ class MedicalFormsSeeder extends Seeder
                     'functional_condition' => $faker->optional()->text(200),
                     'environmental_factors' => $faker->optional()->text(200),
                     'physiotherapeutic_diagnosis' => $faker->optional()->text(200),
+                    'tenant_id' => $faker->randomElement(['1', '2']),
                 ];
 
                 PrimaryMedicalForm::create($primaryAttributes);
@@ -90,6 +92,7 @@ class MedicalFormsSeeder extends Seeder
                     'physiotherapeutic_diagnosis' => $faker->optional()->text(200),
                     'criteria' => $faker->optional()->text(200),
                     'justification' => $faker->optional()->text(200),
+                    'tenant_id' => $faker->randomElement(['1', '2']),
                 ]);
             }
         }

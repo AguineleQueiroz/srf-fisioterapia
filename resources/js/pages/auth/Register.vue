@@ -9,9 +9,10 @@ import AuthBase from '@/layouts/AuthLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
 import { computed, watch } from 'vue';
+import { vMaska } from 'maska/vue';
 
-defineProps({
-    cities: {
+const props = defineProps({
+    tenants: {
         id: Number,
         name: String,
         state_code: String,
@@ -36,6 +37,7 @@ const form = useForm({
     city: '',
     password: '',
     password_confirmation: '',
+    tenant_id: ''
 });
 
 const showDocumentField = computed(() => {
@@ -62,6 +64,18 @@ watch(
     (newValue) => {
         if (newValue === 'basic') form.document = '';
     },
+);
+
+watch(
+    () => form.city,
+    (newValue) => {
+        if (newValue) {
+            const selectedTenant = props.tenants.find(t => t.name.toLowerCase() === newValue);
+            if (selectedTenant) {
+                form.tenant_id = selectedTenant.id;
+            }
+        }
+    }
 );
 
 const submit = () => {
@@ -100,7 +114,7 @@ const submit = () => {
 
                 <div class="grid gap-2">
                     <Label for="cpf">CPF</Label>
-                    <Input id="cpf" type="text" required :tabindex="2" autocomplete="cpf" v-model="form.cpf" placeholder="000.000.000-00" />
+                    <Input id="cpf" type="text" required :tabindex="2" autocomplete="cpf" v-model="form.cpf" placeholder="000.000.000-00" v-maska="'###.###.###-##'" />
                     <InputError :message="form.errors.cpf" />
                 </div>
 
@@ -136,7 +150,7 @@ const submit = () => {
 
                 <div class="grid gap-2">
                     <Label for="phone">Telefone</Label>
-                    <Input id="phone" type="text" required :tabindex="2" autocomplete="phone" v-model="form.phone" placeholder="(00) 0 0000 0000" />
+                    <Input id="phone" type="text" required :tabindex="2" autocomplete="phone" v-model="form.phone" placeholder="(00) 0 0000 0000" v-maska="'(##) # ####-####'"/>
                     <InputError :message="form.errors.phone" />
                 </div>
 
@@ -161,8 +175,8 @@ const submit = () => {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                <SelectItem v-for="city in cities" :key="city.id" :value="city.name.toLowerCase()">
-                                    {{ city.name }}
+                                <SelectItem v-for="tenant in tenants" :key="tenant.id" :value="tenant.name.toLowerCase()">
+                                    {{ tenant.name }}
                                 </SelectItem>
                             </SelectGroup>
                         </SelectContent>

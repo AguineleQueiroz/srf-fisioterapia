@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class City extends Model
+class Tenant extends Model
 {
     use HasFactory, Notifiable;
 
-    protected $table = 'cities';
+    protected $table = 'tenants';
 
     protected $fillable = [
         'name',
@@ -19,7 +19,7 @@ class City extends Model
         'status'
     ];
 
-    public function cities(): array
+    public function tenants(): array
     {
         return self::query()->get()->toArray();
     }

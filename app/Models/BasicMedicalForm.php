@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\TenantScope;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -34,6 +36,7 @@ class BasicMedicalForm extends Model
         'doctor_name',
         'priority',
         'registered',
+        'tenant_id'
     ];
 
     protected $appends = [
@@ -67,6 +70,11 @@ class BasicMedicalForm extends Model
     public function secondaryMedicalForms(): HasMany
     {
         return $this->hasMany(SecondaryMedicalForm::class, 'basic_medical_form_id');
+    }
+
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
     }
 
     /**
@@ -110,6 +118,7 @@ class BasicMedicalForm extends Model
         static::creating(function ($model) {
             $model->ulid = (string) Str::ulid();
         });
+        static::addGlobalScope(new TenantScope);
     }
 
     public function getRouteKeyName(): string

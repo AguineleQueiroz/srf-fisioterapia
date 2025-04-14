@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\City;
+use App\Models\Tenant;
 use App\Models\User;
 use App\Models\UserType;
 use Illuminate\Auth\Events\Registered;
@@ -22,7 +22,7 @@ class RegisteredUserController extends Controller
     public function create(): Response
     {
         return Inertia::render('auth/Register', [
-            'cities' => (new City)->cities(),
+            'tenants' => (new Tenant)->tenants(),
             'userTypes' => (new UserType)->types(),
         ]);
     }
@@ -45,6 +45,7 @@ class RegisteredUserController extends Controller
             'address' => $validated['address'],
             'city' => $validated['city'],
             'password' => Hash::make($validated['password']),
+            'tenant_id' => $validated['tenant_id'],
         ]);
         // attribute roles by user type
         $user->assignRole($validated['professional_type']);

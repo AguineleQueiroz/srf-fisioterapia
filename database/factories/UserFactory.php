@@ -34,6 +34,7 @@ class UserFactory extends Factory
             'document' => fake()->unique()->regexify('[0-9]{4}-[A-Z]{1}'),
             'address' => fake()->address(),
             'city' => fake()->city(),
+            'tenant_id' => fake()->randomElement(['1', '2']), // Datas and Presidente Kubitschek
             'remember_token' => Str::random(10),
         ];
     }

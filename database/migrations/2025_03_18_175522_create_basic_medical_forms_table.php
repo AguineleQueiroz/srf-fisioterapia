@@ -31,6 +31,7 @@ return new class extends Migration
                 $table->string('doctor_name');
                 $table->enum('priority', ['low', 'medium', 'high']);
                 $table->date('registered')->index();
+                $table->foreignId('tenant_id')->constrained('tenants')->cascadeOnDelete();
                 $table->timestamps();
             });
         }

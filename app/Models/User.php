@@ -3,9 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Scopes\TenantScope;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -33,6 +35,7 @@ class User extends Authenticatable
         'document',
         'address',
         'city',
+        'tenant_id'
     ];
 
     /**
@@ -61,7 +64,8 @@ class User extends Authenticatable
             // crefito or other professional registration document
             'document' => 'required|string|min:6',
             'address' => 'required|string|min:6',
-            'city' => 'required|string|min:6',
+            'city' => 'required|string',
+            'tenant_id' => 'required|integer|exists:tenants,id',
         ];
 
         if($id) {
@@ -72,7 +76,7 @@ class User extends Authenticatable
                 ],
                 'cpf' => [
                     'required', 'cpf',
-                    Rule::unique('users', 'document')->ignore($id)
+                    Rule::unique('users', 'cpf')->ignore($id)
                 ],
             ));
         }
@@ -88,13 +92,10 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
     protected static function boot(): void
     {
@@ -102,10 +103,16 @@ class User extends Authenticatable
         static::creating(function ($model) {
             $model->ulid = (string) Str::ulid();
         });
+        static::addGlobalScope(new TenantScope);
     }
 
     public function getRouteKeyName(): string
     {
         return 'ulid';
+    }
+
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
     }
 }
