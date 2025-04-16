@@ -17,7 +17,8 @@ class MedicalFormsSeeder extends Seeder
 
         for ($i = 0; $i < 10; $i++) {
             $cpf = rand(0, 1) ? $this->generateValidCPF() : null;
-            $basicForm = BasicMedicalForm::create([
+            $tenant = $faker->randomElement(['1', '2']);
+            $basicForm = (new BasicMedicalForm)->create([
                 'patient_name' => $faker->name,
                 'cpf' => $cpf,
                 'birth_date' => $faker->date(),
@@ -34,7 +35,7 @@ class MedicalFormsSeeder extends Seeder
                 'doctor_name' => $faker->name,
                 'priority' => $faker->randomElement(['low', 'medium', 'high']),
                 'registered' => $faker->date(),
-                'tenant_id' => $faker->randomElement(['1', '2']),
+                'tenant_id' => $tenant,
             ]);
 
             $primaryFormsCount = rand(1, 3);
@@ -72,16 +73,16 @@ class MedicalFormsSeeder extends Seeder
                     'functional_condition' => $faker->optional()->text(200),
                     'environmental_factors' => $faker->optional()->text(200),
                     'physiotherapeutic_diagnosis' => $faker->optional()->text(200),
-                    'tenant_id' => $faker->randomElement(['1', '2']),
+                    'tenant_id' => $tenant,
                 ];
 
-                PrimaryMedicalForm::create($primaryAttributes);
+                (new PrimaryMedicalForm)->create($primaryAttributes);
             }
 
             $secondaryFormsCount = rand(0, 2);
 
             for ($k = 0; $k < $secondaryFormsCount; $k++) {
-                SecondaryMedicalForm::create([
+                (new SecondaryMedicalForm)->create([
                     'basic_medical_form_id' => $basicForm->id, // Adiciona a chave estrangeira
                     'functional_condition' => $faker->optional()->text(200),
                     'offered_treatment' => $faker->optional()->text(200),
@@ -92,7 +93,7 @@ class MedicalFormsSeeder extends Seeder
                     'physiotherapeutic_diagnosis' => $faker->optional()->text(200),
                     'criteria' => $faker->optional()->text(200),
                     'justification' => $faker->optional()->text(200),
-                    'tenant_id' => $faker->randomElement(['1', '2']),
+                    'tenant_id' => $tenant,
                 ]);
             }
         }
