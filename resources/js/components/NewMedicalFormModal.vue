@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useForm, usePage  } from '@inertiajs/vue3';
+import { router, useForm, usePage } from '@inertiajs/vue3';
 import ActionModal from '@/components/ActionModal.vue';
 import TextArea from '@/components/TextArea.vue';
 import { Label } from '@/components/ui/label';
@@ -36,6 +36,7 @@ const submit = () => {
         onSuccess: () => {
             form.reset();
             open.value = false;
+            router.visit(route('home'));
         },
     });
 };
