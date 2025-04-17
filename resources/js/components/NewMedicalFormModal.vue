@@ -8,6 +8,7 @@ import InputError from '@/components/InputError.vue';
 import RadioInput from '@/components/RadioInput.vue';
 import { DialogClose } from 'radix-vue';
 import { vMaska } from 'maska/vue';
+import { ref } from 'vue';
 
 const user = usePage().props.auth.user
 const form = useForm({
@@ -27,17 +28,21 @@ const form = useForm({
     doctor_name: '',
     priority: '',
     registered: new Intl.DateTimeFormat('en-CA').format(new Date()),
+    tenant_id: user.tenant_id
 });
-
+const open = ref(false);
 const submit = () => {
     form.post(route('medical-form'), {
-        onSuccess: () => form.reset(),
+        onSuccess: () => {
+            form.reset();
+            open.value = false;
+        },
     });
 };
 </script>
 
 <template>
-    <ActionModal title="Informações do Atendimento" triggerButton="Novo Atendimento">
+    <ActionModal title="Informações do Atendimento" triggerButton="Novo Atendimento" v-model:open="open">
         <!--modal content-->
         <form @submit.prevent="submit" class="grid grid-cols-1 gap-y-6">
             <div class="grid grid-cols-3 gap-6">

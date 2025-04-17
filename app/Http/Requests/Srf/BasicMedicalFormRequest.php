@@ -46,6 +46,7 @@ class BasicMedicalFormRequest extends FormRequest
             'doctor_name' => 'required|string|max:255',
             'priority' => 'required|in:low,medium,high',
             'registered' => 'required|date|before_or_equal:today',
+            'tenant_id' => 'required|exists:tenants,id',
         ];
     }
 

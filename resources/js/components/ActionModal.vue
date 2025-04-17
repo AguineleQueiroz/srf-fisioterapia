@@ -9,8 +9,9 @@ import {
     DialogTrigger
 } from 'radix-vue';
 import { X } from 'lucide-vue-next';
+import { computed } from 'vue';
 
-defineProps({
+const props = defineProps({
     title: {
         type: String,
         required: true
@@ -18,13 +19,23 @@ defineProps({
     triggerButton: {
         type: String,
         required: true
+    },
+    open: {
+        type: Boolean,
+        default: false
     }
 })
 
+const emit = defineEmits(['update:open']);
+
+const isOpen = computed({
+    get: () => props.open,
+    set: (value) => emit('update:open', value)
+})
 </script>
 
 <template>
-    <DialogRoot>
+    <DialogRoot v-model:open="isOpen">
         <!--toggle modal-->
         <DialogTrigger class="text-white font-semibold bg-teal-700 hover:bg-teal-800 rounded-sm px-4 py-2" >
             {{ triggerButton }}
@@ -48,6 +59,7 @@ defineProps({
                 <DialogClose
                     class="hover:bg-green4 focus:shadow-green7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
                     aria-label="Close"
+                    id="close_modal"
                 >
                     <X size="18" class="hover:bg-gray-100 rounded-full" />
                 </DialogClose>
