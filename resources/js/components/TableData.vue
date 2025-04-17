@@ -1,6 +1,6 @@
 <template>
-    <div class="flex items-start justify-center">
-        <div class="w-full bg-white shadow-sm overflow-hidden border rounded-sm">
+    <div class="grid grid-cols-1 w-full items-start justify-center">
+        <div class="w-full bg-white shadow-sm border rounded-sm overflow-x-auto">
             <table class="w-full border-collapse">
                 <slot/>
             </table>

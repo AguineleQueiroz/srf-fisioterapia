@@ -18,7 +18,7 @@ import { getInitials } from '@/composables/useInitials';
 import type { BreadcrumbItem, NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
-import { AlignJustify } from 'lucide-vue-next'
+import { AlignJustify, Menu, Search } from 'lucide-vue-next'
 
 interface Props {
     breadcrumbs?: BreadcrumbItem[];
@@ -122,11 +122,11 @@ const mainNavItems: NavItem[] = [
                 </div>
 
                 <div class="ml-auto flex items-center space-x-2">
-                    <div class="relative flex items-center space-x-1">
+                    <!--<div class="relative flex items-center space-x-1">
                         <Button variant="ghost" size="icon" class="group h-9 w-9 cursor-pointer">
                             <Search class="size-5 opacity-80 group-hover:opacity-100" />
                         </Button>
-                    </div>
+                    </div>-->
 
                     <DropdownMenu>
                         <DropdownMenuTrigger :as-child="true">

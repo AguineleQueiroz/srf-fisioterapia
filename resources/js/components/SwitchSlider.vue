@@ -5,11 +5,11 @@ const switchState = ref(false)
 </script>
 
 <template>
-    <div class="flex gap-2 items-center">
-        <label class="text-white text-[15px] leading-none pr-[15px] select-none" for="medical_forms_mode" />
+    <div class="flex lg:gap-2 items-center">
+        <label class="order-1 lg:order-0 text-white text-[15px] leading-none pr-[15px] select-none" for="medical_forms_mode" />
         <SwitchRoot
             id="airplane-mode" v-model:checked="switchState"
-            class="w-[62px] h-[23px] flex bg-gray-300 shadow-sm rounded-full
+            class="order-0 lg:order-1 w-[62px] h-[23px] flex bg-gray-300 shadow-sm rounded-full
                 relative data-[state=checked]:bg-teal-700 cursor-default" >
 
             <SwitchThumb

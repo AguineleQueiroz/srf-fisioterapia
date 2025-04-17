@@ -4,11 +4,11 @@ import TableData from '@/components/TableData.vue';
 import TableBody from '@/components/TableBody.vue';
 import TableHead from '@/components/TableHead.vue';
 import Pagination from '@/components/Pagination.vue';
+import TableRow from '@/components/TableRow.vue';
+import ActionBar from '@/components/ActionBar.vue';
 import { type BreadcrumbItem, MedicalForm } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { provide, ref } from 'vue';
-import TableRow from '@/components/TableRow.vue';
-import ActionBar from '@/components/ActionBar.vue';
 
 
 const props = defineProps<{ medicalForms: object }>();
@@ -35,7 +35,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="rounded-xl p-4">
-            <div class="grid auto-rows-min md:grid-cols-1">
+            <div class="grid auto-rows-min md:grid-cols-1 overflow-hidden">
                 <div class="flex flex-col align-top justify-between">
                     <ActionBar />
                     <TableData>
