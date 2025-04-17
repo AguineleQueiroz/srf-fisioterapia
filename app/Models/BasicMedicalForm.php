@@ -50,12 +50,21 @@ class BasicMedicalForm extends Model
     /**
      * @return LengthAwarePaginator
      */
-    public function basicMedicalForms(): LengthAwarePaginator
+    public function basicMedicalForms($search = null): LengthAwarePaginator
     {
         return self::query()
+            ->when(
+                $search,
+                fn($query) =>
+                    $query->where('patient_name', 'like', '%' . $search . '%')
+                        ->orWhere('cpf', 'like', '%' . $search . '%')
+                        ->orWhere('card_sus', 'like', '%' . $search . '%')
+
+            )
             ->with(['primaryMedicalForms', 'secondaryMedicalForms'])
             ->orderByDesc('created_at')
-            ->paginate(7);
+            ->paginate(7)
+            ->withQueryString();
     }
 
     public function create(array $data)

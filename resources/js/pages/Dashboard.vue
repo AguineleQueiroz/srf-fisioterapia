@@ -37,7 +37,7 @@ const breadcrumbs: BreadcrumbItem[] = [
         <div class="rounded-xl p-4">
             <div class="grid auto-rows-min md:grid-cols-1 overflow-hidden">
                 <div class="flex flex-col align-top justify-between">
-                    <ActionBar />
+                    <ActionBar/>
                     <TableData>
                         <TableHead @updateItems="updateItems"/>
                         <TableBody>

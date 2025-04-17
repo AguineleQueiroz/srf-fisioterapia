@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Srf\BasicMedicalFormRequest;
 use App\Models\BasicMedicalForm;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Nette\NotImplementedException;
@@ -17,10 +18,12 @@ class MedicalFormsController extends Controller
     public function __construct(BasicMedicalForm $basicMedicalFormInstance) {
         $this->basicMedicalFormInstance = $basicMedicalFormInstance;
     }
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $search = $request->input('search') ?? '';
         return Inertia::render('Dashboard', [
-            'medicalForms' => (new BasicMedicalForm)->basicMedicalForms(),
+            'medicalForms' => (new BasicMedicalForm)->basicMedicalForms($search),
+            'searchParam' => $search
         ]);
     }
 
