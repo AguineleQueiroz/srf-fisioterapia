@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -23,6 +24,7 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $tenant = Tenant::factory()->create();
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
@@ -34,7 +36,7 @@ class UserFactory extends Factory
             'document' => fake()->unique()->regexify('[0-9]{4}-[A-Z]{1}'),
             'address' => fake()->address(),
             'city' => fake()->city(),
-            'tenant_id' => fake()->randomElement(['1', '2']), // Datas and Presidente Kubitschek
+            'tenant_id' => $tenant->id, // Datas and Presidente Kubitschek
             'remember_token' => Str::random(10),
         ];
     }

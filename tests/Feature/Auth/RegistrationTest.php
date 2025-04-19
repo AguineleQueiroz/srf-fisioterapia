@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\Tenant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class RegistrationTest extends TestCase
@@ -18,21 +18,25 @@ class RegistrationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /*public function test_new_users_can_register()
+    public function test_new_users_can_register()
     {
+        Role::create(['name' => 'primary', 'guard_name' => 'web']);
+        $tenant = Tenant::factory()->create();
         $response = $this->post('/cadastrar', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Dummy User',
+            'email' => 'test@example.com.br',
             'password' => 'password',
+            'password_confirmation' => 'password',
             'cpf' => '529.686.670-33',
-            'professional_type' => null,
-            'document' => '000000-A',
             'phone' => '36998333810',
+            'professional_type' => 'primary',
+            'document' => '000001-A',
             'address' => 'Middle Street, 123',
-            'city' => 'Los Angeles'
+            'city' => 'Los Angeles',
+            'tenant_id' => $tenant->id
         ]);
 
-        $this->assertAuthenticated('web');
+        $this->assertAuthenticated();
         $response->assertRedirect(route('dashboard', absolute: false));
-    }*/
+    }
 }

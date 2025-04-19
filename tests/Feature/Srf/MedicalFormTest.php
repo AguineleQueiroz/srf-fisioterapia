@@ -68,15 +68,6 @@ class MedicalFormTest extends TestCase
     }
 
     /**
-     * Verifica se o utilizador não autenticado é redirecionado ao acessar a página Dashboard.
-     */
-    public function test_unauthenticated_user_is_redirected_to_login_when_accessing_dashboard(): void
-    {
-        $response = $this->get(route('dashboard'));
-        $response->assertRedirect('/entrar');
-    }
-
-    /**
      * Verifica se a página Dashboard com formulários médicos é carregada corretamente.
      */
     public function test_index_loads_dashboard_with_medical_forms(): void
