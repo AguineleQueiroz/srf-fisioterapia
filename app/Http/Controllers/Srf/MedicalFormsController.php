@@ -25,11 +25,11 @@ class MedicalFormsController extends Controller
         ]);
     }
 
-    public function store(BasicMedicalFormRequest $request): Response|RedirectResponse
+    public function store(BasicMedicalFormRequest $request): Response|RedirectResponse|array
     {
         $basicMedicalForm = $this->basicMedicalFormInstance->create($request->validated());
         return $basicMedicalForm
             ? to_route('home')->with('success', 'Atendimento cadastrado.')
-            : back()->with('erro', 'Dados do atendimento não puderam ser salvos.');
+            : to_route('medical-form')->with('error', 'Dados do atendimento não puderam ser salvos.');
     }
 }

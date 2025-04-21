@@ -31,7 +31,7 @@ class BasicMedicalFormRequest extends FormRequest
     {
         return [
             'patient_name' => 'required|string|max:255',
-            'cpf' => 'nullable|string|unique:basic_medical_forms,cpf|size:11',
+            'cpf' => 'nullable|cpf|string|unique:basic_medical_forms,cpf|size:11',
             'birth_date' => 'required|date|before_or_equal:today',
             'gender' => 'required|in:male,female',
             'phone' => 'nullable|string',

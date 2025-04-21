@@ -48,6 +48,7 @@ class BasicMedicalForm extends Model
     ];
 
     /**
+     * @param null $search
      * @return LengthAwarePaginator
      */
     public function basicMedicalForms($search = null): LengthAwarePaginator
