@@ -25,7 +25,8 @@ class SecondaryMedicalForm extends Model
         'physiotherapeutic_diagnosis',
         'criteria',
         'justification',
-        'tenant_id'
+        'tenant_id',
+        'user_id',
     ];
 
     public function basicMedicalForms(): BelongsTo

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use Faker\Factory as Faker;
@@ -14,10 +15,11 @@ class MedicalFormsSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create('pt_BR');
-
+        User::factory()->count(3)->create(); //Id's = 2, 3, 4
         for ($i = 0; $i < 10; $i++) {
             $cpf = rand(0, 1) ? $this->generateValidCPF() : null;
             $tenant = $faker->randomElement(['1', '2']);
+            $user_id = $faker->randomElement([1, 2, 3, 4]);
             $basicForm = (new BasicMedicalForm)->create([
                 'patient_name' => $faker->name,
                 'cpf' => $cpf,
@@ -36,6 +38,7 @@ class MedicalFormsSeeder extends Seeder
                 'priority' => $faker->randomElement(['low', 'medium', 'high']),
                 'registered' => $faker->date(),
                 'tenant_id' => $tenant,
+                'user_id' => $user_id
             ]);
 
             $primaryFormsCount = rand(1, 3);
@@ -47,7 +50,7 @@ class MedicalFormsSeeder extends Seeder
                 ];
 
                 $primaryAttributes = [
-                    'basic_medical_form_id' => $basicForm->id // Adiciona a chave estrangeira
+                    'basic_medical_form_id' => $basicForm->id
                 ];
 
                 foreach ($primaryData as $field) {
@@ -74,6 +77,7 @@ class MedicalFormsSeeder extends Seeder
                     'environmental_factors' => $faker->optional()->text(200),
                     'physiotherapeutic_diagnosis' => $faker->optional()->text(200),
                     'tenant_id' => $tenant,
+                    'user_id' => $user_id
                 ];
 
                 (new PrimaryMedicalForm)->create($primaryAttributes);
@@ -94,6 +98,7 @@ class MedicalFormsSeeder extends Seeder
                     'criteria' => $faker->optional()->text(200),
                     'justification' => $faker->optional()->text(200),
                     'tenant_id' => $tenant,
+                    'user_id' => $user_id
                 ]);
             }
         }

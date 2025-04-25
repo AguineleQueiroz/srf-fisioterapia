@@ -59,7 +59,8 @@ class PrimaryMedicalForm extends Model
         'ra_peso_saudavel',
         'ra_geracao_esporte',
         'ra_none_alternatives',
-        'tenant_id'
+        'tenant_id',
+        'user_id',
     ];
 
     public function basicMedicalForms(): BelongsTo

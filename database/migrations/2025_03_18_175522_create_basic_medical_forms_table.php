@@ -32,6 +32,7 @@ return new class extends Migration
                 $table->enum('priority', ['low', 'medium', 'high']);
                 $table->date('registered')->index();
                 $table->foreignId('tenant_id')->constrained('tenants')->cascadeOnDelete();
+                $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
                 $table->timestamps();
             });
         }

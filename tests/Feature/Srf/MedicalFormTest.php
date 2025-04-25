@@ -47,7 +47,8 @@ class MedicalFormTest extends TestCase
             'doctor_name' => 'Dr. Paulo Sousa',
             'priority' => 'high',
             'registered' => '2024-03-25',
-            'tenant_id' => $this->tenant->id
+            'tenant_id' => $this->tenant->id,
+            'user_id' => $this->user->id
         ]);
         $this->form2 = (new BasicMedicalForm)->create([
             'ulid' => (string) Str::ulid(),
@@ -67,7 +68,8 @@ class MedicalFormTest extends TestCase
             'doctor_name' => 'Dra. Carla Mendes',
             'priority' => 'medium',
             'registered' => '2024-04-01',
-            'tenant_id' => $this->tenant->id
+            'tenant_id' => $this->tenant->id,
+            'user_id' => $this->user->id
         ]);
 
         $faker = Faker::create('pt_BR');
@@ -89,6 +91,7 @@ class MedicalFormTest extends TestCase
             'priority' => $faker->randomElement(['low', 'medium', 'high']),
             'registered' => $faker->date(),
             'tenant_id' => $this->tenant->id,
+            'user_id' => $this->user->id
         ];
     }
 
