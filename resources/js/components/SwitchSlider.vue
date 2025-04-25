@@ -1,7 +1,25 @@
 <script setup lang="ts">
 import { SwitchRoot, SwitchThumb } from 'radix-vue'
-import { ref } from 'vue'
-const switchState = ref(false)
+import { inject, ref, watch } from 'vue';
+import { MedicalForm } from '@/types';
+import { usePage } from '@inertiajs/vue3';
+
+const switchState = ref(false);
+const user = usePage().props.auth.user;
+const updateItems = inject<(newItems: MedicalForm[]) => void>('updateItems', () => {});
+
+watch(switchState, async () => {
+    try {
+        const response = switchState.value
+            ? await fetch(`/user/basic-medical-forms/${user.id}`)
+            : await fetch(`/medical-forms`);
+        const data = await response.json();
+        updateItems(data.data);
+    } catch (error) {
+        throw new Error(`Error fetching medical forms: ${error.message}`);
+    }
+});
+
 </script>
 
 <template>

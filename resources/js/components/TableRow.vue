@@ -62,7 +62,7 @@ const toggleExpansiveRows = (trId: string) => {
     el.classList.remove('hidden');
     footerEl.classList.remove('hidden');
 };
-// referral medical forms
+
 const form = useForm({
     attention: '',
 });

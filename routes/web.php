@@ -10,6 +10,8 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', [MedicalFormsController::class, 'index'])->name('dashboard');
     Route::post('/medical-form', [MedicalFormsController::class, 'store'])->name('medical-form');
+    Route::get('/user/basic-medical-forms/{user_id}', [MedicalFormsController::class, 'myBasicMedicalForms'])->name('my-medical-forms');
+    Route::get('/medical-forms', [MedicalFormsController::class, 'allBasicMedicalForms'])->name('medical-forms');
 });
 
 require __DIR__.'/settings.php';

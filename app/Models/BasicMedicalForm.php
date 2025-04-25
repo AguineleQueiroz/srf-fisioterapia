@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -36,7 +37,8 @@ class BasicMedicalForm extends Model
         'doctor_name',
         'priority',
         'registered',
-        'tenant_id'
+        'tenant_id',
+        'user_id',
     ];
 
     protected $appends = [
@@ -62,6 +64,16 @@ class BasicMedicalForm extends Model
                         ->orWhere('card_sus', 'like', '%' . $search . '%')
 
             )
+            ->with(['primaryMedicalForms', 'secondaryMedicalForms'])
+            ->orderByDesc('created_at')
+            ->paginate(7)
+            ->withQueryString();
+    }
+
+    public function basicMedicalFormsByUserId($userId): LengthAwarePaginator
+    {
+        return self::query()
+            ->where('user_id', $userId)
             ->with(['primaryMedicalForms', 'secondaryMedicalForms'])
             ->orderByDesc('created_at')
             ->paginate(7)

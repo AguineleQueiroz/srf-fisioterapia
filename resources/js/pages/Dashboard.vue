@@ -21,6 +21,8 @@ const updateItems = (sortedItems: MedicalForm[]) => {
     items.value = sortedItems;
 };
 
+provide('updateItems', updateItems);
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
