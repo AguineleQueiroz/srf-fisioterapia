@@ -4,7 +4,12 @@ import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuLabel, DropdownMenuSeparator,
+    DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 import {
     NavigationMenu,
     NavigationMenuItem,
@@ -17,8 +22,8 @@ import UserMenuContent from '@/components/UserMenuContent.vue';
 import { getInitials } from '@/composables/useInitials';
 import type { BreadcrumbItem, NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
+import { AlignJustify, Menu, Bell } from 'lucide-vue-next';
 import { computed } from 'vue';
-import { AlignJustify, Menu } from 'lucide-vue-next'
 
 interface Props {
     breadcrumbs?: BreadcrumbItem[];
@@ -41,10 +46,9 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Lista de Atendimentos',
         href: '/home',
-        icon: AlignJustify ,
+        icon: AlignJustify,
     },
 ];
-
 </script>
 
 <template>
@@ -61,7 +65,7 @@ const mainNavItems: NavItem[] = [
                         </SheetTrigger>
                         <SheetContent side="left" class="w-[300px] p-6">
                             <SheetTitle class="sr-only">Navigation Menu</SheetTitle>
-                            <SheetHeader class="flex items-center w-24">
+                            <SheetHeader class="flex w-24 items-center">
                                 <AppLogoIcon class="mr-2" />
                             </SheetHeader>
                             <div class="flex h-full flex-1 flex-col justify-between space-y-4 py-6">
@@ -96,11 +100,11 @@ const mainNavItems: NavItem[] = [
                 </div>
 
                 <Link :href="route('dashboard')" class="flex items-center gap-x-2">
-                    <AppLogo class="hidden xl:block w-24" />
+                    <AppLogo class="hidden w-24 xl:block" />
                 </Link>
 
                 <!-- Desktop Menu -->
-                 <div class="hidden h-full lg:flex lg:flex-1">
+                <div class="hidden h-full lg:flex lg:flex-1">
                     <NavigationMenu class="ml-10 flex h-full items-stretch">
                         <NavigationMenuList class="flex h-full items-stretch space-x-2">
                             <NavigationMenuItem v-for="(item, index) in mainNavItems" :key="index" class="relative flex h-full items-center">
@@ -112,32 +116,29 @@ const mainNavItems: NavItem[] = [
                                         {{ item.title }}
                                     </NavigationMenuLink>
                                 </Link>
-                                <div
-                                    v-if="isCurrentRoute(item.href)"
-                                    class="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-teal-700"
-                                ></div>
+                                <div v-if="isCurrentRoute(item.href)" class="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-teal-700"></div>
                             </NavigationMenuItem>
                         </NavigationMenuList>
                     </NavigationMenu>
                 </div>
 
                 <div class="ml-auto flex items-center space-x-2">
-                    <!--<div class="relative flex items-center space-x-1">
+                    <div class="relative flex items-center space-x-1">
                         <Button variant="ghost" size="icon" class="group h-9 w-9 cursor-pointer">
-                            <Search class="size-5 opacity-80 group-hover:opacity-100" />
+                            <Bell class="size-5 opacity-80 group-hover:opacity-100" />
                         </Button>
-                    </div>-->
+                    </div>
 
                     <DropdownMenu>
                         <DropdownMenuTrigger :as-child="true">
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                class="relative size-10 w-auto rounded-full p-1 focus-within:ring-2 focus-within:ring-primary"
+                                class="relative size-10 w-auto rounded-lg"
                             >
-                                <Avatar class="size-8 overflow-hidden rounded-full">
+                                <Avatar class="size-9 overflow-hidden rounded-lg hover:bg-teal-700">
                                     <AvatarImage v-if="auth.user.avatar" :src="auth.user.avatar" :alt="auth.user.name" />
-                                    <AvatarFallback class="rounded-lg bg-neutral-200 font-semibold text-black dark:bg-neutral-700 dark:text-white">
+                                    <AvatarFallback class="flex items-center justify-center size-9 rounded-lg bg-transparent font-semibold text-black hover:bg-teal-700 hover:text-white">
                                         {{ getInitials(auth.user?.name) }}
                                     </AvatarFallback>
                                 </Avatar>
