@@ -21,13 +21,13 @@ defineProps<Props>();
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
         <DropdownMenuItem :as-child="true">
-            <Link class="block w-full" :href="route('profile.edit')">
+            <Link class="block w-full" :href="route('terms')">
                 <Scroll class="mr-2 h-4 w-4" />
                 Termos de uso
             </Link>
         </DropdownMenuItem>
         <DropdownMenuItem :as-child="true">
-            <Link class="block w-full" :href="route('profile.edit')">
+            <Link class="block w-full" :href="route('policies')">
                 <ScrollText class="mr-2 h-4 w-4" />
                 Politica de privacidade
             </Link>
