@@ -77,7 +77,7 @@ const submit = () => {
 <template>
     <template v-if="items.length > 0">
         <template v-for="item in items" :key="item.id">
-            <tr class="cursor-pointer border-b hover:bg-gray-100">
+            <tr class="cursor-pointer border-b hover:bg-gray-100 text-sm">
                 <td class="flex justify-center p-4 w-[162px]">
                     <Icon name="circle" size="24" :color="color(item.priority)" stroke-width="1" />
                 </td>
@@ -88,7 +88,7 @@ const submit = () => {
                     <ChevronDown class="text-teal-700" />
                 </td>
             </tr>
-            <tr :id="'tr-'+item.id" class="expansive-tr hidden">
+            <tr :id="'tr-'+item.id" class="expansive-tr hidden text-sm">
                 <td></td>
                 <td colspan="4" class="border-b">
                     <!-- Informations -->
