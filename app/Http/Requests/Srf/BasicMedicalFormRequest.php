@@ -27,15 +27,20 @@ class BasicMedicalFormRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array|string>
      */
-    public function rules(): array
+    public static function rules(): array
     {
         return [
+            'id' => 'nullable|numeric|exists:basic_medical_forms,id',
             'patient_name' => 'required|string|max:255',
-            'cpf' => 'nullable|cpf|string|unique:basic_medical_forms,cpf|size:11',
+            'cpf' => request()->exists('id')
+                ? 'nullable|cpf|string|size:11'
+                : 'nullable|cpf|string|unique:basic_medical_forms,cpf|size:11',
             'birth_date' => 'required|date|before_or_equal:today',
             'gender' => 'required|in:male,female',
             'phone' => 'nullable|string',
-            'card_sus' => 'required|string|unique:basic_medical_forms,card_sus',
+            'card_sus' => request()->exists('id')
+                ? 'required|string'
+                : 'required|string|unique:basic_medical_forms,card_sus',
             'address' => 'required|string|max:255',
             'primary_care_clinic' => 'required|string|max:255',
             'community_health_worker' => 'required|string|max:255',

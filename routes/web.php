@@ -10,13 +10,17 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+
     Route::get('/home', [MedicalFormsController::class, 'index'])->name('dashboard');
     Route::post('/medical-form', [MedicalFormsController::class, 'store'])->name('medical-form');
+    Route::put('/update-medical-form', [MedicalFormsController::class, 'update'])->name('update-medical-form');
+
     Route::get('/user/basic-medical-forms/{user_id}', [MedicalFormsController::class, 'myBasicMedicalForms'])->name('my-medical-forms');
     Route::get('/medical-forms', [MedicalFormsController::class, 'allBasicMedicalForms'])->name('medical-forms');
 
     Route::get('/terms', [TermsController::class, 'index'])->name('terms');
     Route::get('/policies', [PoliciesController::class, 'index'])->name('policies');
+
 });
 
 require __DIR__.'/settings.php';

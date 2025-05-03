@@ -6,6 +6,7 @@ import { ChevronDown, LoaderCircle } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useForm } from '@inertiajs/vue3';
+import MedicalFormModal from '@/components/MedicalFormModal.vue';
 
 const items = inject<MedicalForm[]>('items', []);
 
@@ -171,8 +172,12 @@ const submit = () => {
                 <td></td>
                 <td colspan="4">
                     <div class="flex justify-between p-4 border-l">
-                        <Button name="edit_medical_form" class="rounded-sm px-4 hover:bg-teal-900">Editar</Button>
-
+                        <MedicalFormModal
+                            triggerButtonText="Editar"
+                            :medicalForm="item"
+                            url="update-medical-form"
+                            :isUpdate="true"
+                        />
                         <Button name="add_medical_form" class="rounded-sm px-4 hover:bg-teal-900">Adicionar Ficha</Button>
 
                         <Button name="list_medical_forms" class="rounded-sm px-4 hover:bg-teal-900">Fichas do Paciente</Button>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Scopes\TenantScope;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -70,6 +71,10 @@ class BasicMedicalForm extends Model
             ->withQueryString();
     }
 
+    /**
+     * @param $userId
+     * @return LengthAwarePaginator
+     */
     public function basicMedicalFormsByUserId($userId): LengthAwarePaginator
     {
         return self::query()
@@ -80,20 +85,65 @@ class BasicMedicalForm extends Model
             ->withQueryString();
     }
 
-    public function create(array $data)
+    /**
+     * @param array $data
+     * @return BasicMedicalForm|null
+     */
+    public function create(array $data): BasicMedicalForm | null
     {
-        return self::query()->create($data);
+        try {
+            return self::query()->create($data);
+        } catch (Exception $exception) {
+            logger()->error(
+                'Error trying to save medical form record: '.$exception->getMessage(),
+                [ 'exception' => $exception ]
+            );
+            return null;
+        }
     }
 
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function edit(array $data): bool
+    {
+        try {
+            if(!isset($data['id'])) {
+                return false;
+            }
+            $basicMedicalForm = self::query()->find($data['id']);
+            if(!$basicMedicalForm) {
+                return false;
+            }
+            return $basicMedicalForm->update($data);
+        } catch (Exception $exception) {
+            logger()->error(
+                'Error trying to update medical form record: '.$exception->getMessage(),
+                [ 'exception' => $exception ]
+            );
+            return false;
+        }
+    }
+
+    /**
+     * @return HasMany
+     */
     public function primaryMedicalForms(): HasMany {
         return $this->hasMany(PrimaryMedicalForm::class, 'basic_medical_form_id');
     }
 
+    /**
+     * @return HasMany
+     */
     public function secondaryMedicalForms(): HasMany
     {
         return $this->hasMany(SecondaryMedicalForm::class, 'basic_medical_form_id');
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function tenant(): BelongsTo
     {
         return $this->belongsTo(Tenant::class);
@@ -107,6 +157,9 @@ class BasicMedicalForm extends Model
         return Carbon::parse($this->attributes['registered'])->format('d/m/Y');
     }
 
+    /**
+     * @return string
+     */
     public function getFormattedCpfAttribute(): string
     {
         if($this->attributes['cpf']) {
@@ -119,21 +172,33 @@ class BasicMedicalForm extends Model
         return '---';
     }
 
+    /**
+     * @return string
+     */
     public function getFormattedGenderAttribute(): string
     {
         return $this->attributes['gender'] === 'male' ? 'Masculino' : 'Feminino';
     }
 
+    /**
+     * @return string
+     */
     public function getFormattedBirthdateAttribute(): string
     {
         return Carbon::parse($this->attributes['birth_date'])->format('d/m/Y');
     }
 
+    /**
+     * @return string
+     */
     public function getFormattedLastHospitalizationAttribute(): string
     {
         return Carbon::parse($this->attributes['last_hospitalization'])->format('d/m/Y');
     }
 
+    /**
+     * @return void
+     */
     protected static function boot(): void
     {
         parent::boot();
@@ -143,6 +208,9 @@ class BasicMedicalForm extends Model
         static::addGlobalScope(new TenantScope);
     }
 
+    /**
+     * @return string
+     */
     public function getRouteKeyName(): string
     {
         return 'ulid';

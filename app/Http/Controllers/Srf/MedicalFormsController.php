@@ -15,9 +15,16 @@ class MedicalFormsController extends Controller
 {
     protected BasicMedicalForm $basicMedicalFormInstance;
 
+    /**
+     * @param BasicMedicalForm $basicMedicalFormInstance
+     */
     public function __construct(BasicMedicalForm $basicMedicalFormInstance) {
         $this->basicMedicalFormInstance = $basicMedicalFormInstance;
     }
+
+    /**
+     * @return Response
+     */
     public function index(): Response
     {
         $search = request()->input('search') ?? '';
@@ -27,6 +34,10 @@ class MedicalFormsController extends Controller
         ]);
     }
 
+    /**
+     * @param BasicMedicalFormRequest $request
+     * @return Response|RedirectResponse|array
+     */
     public function store(BasicMedicalFormRequest $request): Response|RedirectResponse|array
     {
         $data = $request->validated();
@@ -37,11 +48,31 @@ class MedicalFormsController extends Controller
             : to_route('medical-form')->with('error', 'Dados do atendimento não puderam ser salvos.');
     }
 
+    /**
+     * @param BasicMedicalFormRequest $request
+     * @return Response|RedirectResponse|array
+     */
+    public function update(BasicMedicalFormRequest $request): Response|RedirectResponse|array
+    {
+        $data = $request->validated();
+        $basicMedicalForm = $this->basicMedicalFormInstance->edit($data);
+        return $basicMedicalForm
+            ? to_route('home')->with('success', 'Atendimento atualizado com sucesso.')
+            : to_route('medical-form')->with('error', 'Dados do atendimento não puderam ser salvos.');
+    }
+
+    /**
+     * @param $userId
+     * @return LengthAwarePaginator
+     */
     public function myBasicMedicalForms($userId): LengthAwarePaginator
     {
         return $this->basicMedicalFormInstance->basicMedicalFormsByUserId($userId);
     }
 
+    /**
+     * @return LengthAwarePaginator
+     */
     public function allBasicMedicalForms(): LengthAwarePaginator
     {
         return $this->basicMedicalFormInstance->basicMedicalForms();
