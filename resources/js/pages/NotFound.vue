@@ -16,21 +16,21 @@ import { Head, Link } from '@inertiajs/vue3';
                     <span class="text-[108px] mb-0">404</span>
                 </div>
 
-                <div class="text-[38px]">
+                <div class="text-[38px] lg:mb-[-40px]">
                     OOOps!
                     <br />
                     Página não encontrada
                 </div>
 
-                <p class="text-gray-500 text-lg">
+                <p class="text-teal-700 text-lg">
                     Esta página não existe ou foi movida!
                     <br />
                     Nós sugerimos retornar para a homepage
                 </p>
 
                 <div class="mt-8 lg:mt-0">
-                    <Link :href="route('dashboard')" class="bg-teal-700 hover:bg-teal-900 text-white p-4 rounded-md">
-                        Voltar para página principal
+                    <Link :href="route('dashboard')" class="bg-teal-700 hover:bg-teal-900 text-white p-4 rounded-sm">
+                        VOLTAR PARA PÁGINA PRINCIPAL
                     </Link>
                 </div>
             </div>
