@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import RadioInput from '@/components/RadioInput.vue';
 import { MedicalForm } from '@/types';
 import { reactive, ref, watch } from 'vue';
-import { router, useForm } from '@inertiajs/vue3';
+import { router, useForm, usePage } from '@inertiajs/vue3';
 import { vMaska } from 'maska/vue';
 
 const props = defineProps<{
