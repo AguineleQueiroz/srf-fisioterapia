@@ -27,9 +27,10 @@ class MedicalFormTest extends TestCase
     {
         parent::setUp();
         session()->flush();
+        $this->basicMedicalFormModel = new BasicMedicalForm();
         $this->tenant = Tenant::factory()->create();
         $this->user = User::factory()->create(['tenant_id' => $this->tenant->id]);
-        $this->form1 = (new BasicMedicalForm)->create([
+        $this->form1 = $this->basicMedicalFormModel->create([
             'ulid' => (string) Str::ulid(),
             'patient_name' => 'João da Silva',
             'cpf' => '10543695000',
@@ -50,7 +51,7 @@ class MedicalFormTest extends TestCase
             'tenant_id' => $this->tenant->id,
             'user_id' => $this->user->id
         ]);
-        $this->form2 = (new BasicMedicalForm)->create([
+        $this->form2 = $this->basicMedicalFormModel->create([
             'ulid' => (string) Str::ulid(),
             'patient_name' => 'Ana Beatriz Costa',
             'cpf' => '58615895007',
@@ -160,5 +161,13 @@ class MedicalFormTest extends TestCase
         $this->assertTrue(session()->has('errors'));
         $this->assertNotEmpty(session('errors')->getBag('default')->all());
         $response->assertSessionHasErrors(['cpf']);
+    }
+
+    public function test_basic_medical_form_can_be_updated_success_flash(): void
+    {
+        $this->form1->phone = '(38) 98989-5858';
+        $response = $this->actingAs($this->user)->put(route('update-medical-form'), $this->form1->toArray());
+        $response->assertStatus(302);
+        $response->assertRedirect(route('home'))->assertSessionHas('success', 'Atendimento atualizado com sucesso.');
     }
 }
