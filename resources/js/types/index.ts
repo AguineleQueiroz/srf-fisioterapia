@@ -106,4 +106,10 @@ export interface MedicalForm {
     justification: ?string;
     formatted_registered: string;
     formatted_cpf: string;
+    tenant_id?: number;
+}
+
+export interface FlashMessages {
+    message: string,
+    type: string
 }

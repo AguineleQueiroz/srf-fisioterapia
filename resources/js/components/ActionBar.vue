@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import NewMedicalFormModal from '@/components/NewMedicalFormModal.vue';
 import SwitchSlider from '@/components/SwitchSlider.vue';
 import { Input } from '@/components/ui/input';
 import { router } from '@inertiajs/vue3';
 import { Search } from 'lucide-vue-next';
 import { ref } from 'vue';
+import MedicalFormModal from '@/components/MedicalFormModal.vue';
 
 const searchQuery = ref('');
 const search = () => {
@@ -34,7 +34,12 @@ const search = () => {
                 <p class="text-sm">Meus atendimentos</p>
             </div>
             <div class="flex md:justify-end">
-                <NewMedicalFormModal />
+                <MedicalFormModal
+                    triggerButtonText="Novo Atendimento"
+                    :medical-form="{}"
+                    url="medical-form"
+                    :is-update="false"
+                />
             </div>
         </div>
     </div>

@@ -37,6 +37,12 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
+        logger('Session messages --', [session('success')]);
+        $flash_messages = [
+            'success' => session('success'),
+            'error' => session('error'),
+            'warning' => session('warning'),
+        ];
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -44,11 +50,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'flash' => [
-                'success' => fn () => $request->session()->get('success'),
-                'error' => fn () => $request->session()->get('error'),
-                'warning' => fn () => $request->session()->get('warning'),
-            ],
+            'flash' => $flash_messages,
         ];
     }
 }

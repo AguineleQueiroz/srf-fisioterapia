@@ -8,36 +8,66 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import RadioInput from '@/components/RadioInput.vue';
 import { MedicalForm } from '@/types';
-import { reactive, ref, watch } from 'vue';
+import { ref } from 'vue';
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import { vMaska } from 'maska/vue';
 
 const props = defineProps<{
-    medicalForm: MedicalForm,
+    medicalForm?: MedicalForm,
     url: string,
     triggerButtonText: string
     isUpdate: boolean
 }>();
 
-let form = reactive({...props.medicalForm})
+const medicalForm = props.medicalForm;
+const user = usePage().props.auth.user
+const form = useForm({
+    ...(medicalForm.id ? {id: medicalForm.id} : {}),
+    patient_name: medicalForm.patient_name ?? '',
+    gender: medicalForm.gender ?? '',
+    birth_date: medicalForm.birth_date ?? '',
+    cpf: medicalForm.cpf ?? '',
+    card_sus: medicalForm.card_sus ?? '',
+    phone: medicalForm.phone ?? '',
+    address: medicalForm.address ?? '',
+    primary_care_clinic: medicalForm.primary_care_clinic ?? '',
+    community_health_worker: medicalForm.community_health_worker ?? '',
+    diagnosis: medicalForm.diagnosis ?? '',
+    comorbidity: medicalForm.comorbidity ?? '',
+    last_hospitalization: medicalForm.last_hospitalization ?? '',
+    registered_by: medicalForm.registered_by ?? user.name,
+    doctor_name: medicalForm.doctor_name ?? '',
+    priority: medicalForm.priority ?? '',
+    registered: medicalForm.registered ?? new Intl.DateTimeFormat('en-CA').format(new Date()),
+    tenant_id: medicalForm.tenant_id ?? user.tenant_id
+});
+
 const open = ref(false);
 
-watch(() => props.medicalForm, newValue => {
-    Object.assign(form, newValue);
-}, {deep: true});
 
 const submit = () => {
-    form = useForm(form);
-    const onSuccessCallback = () => {
-        form.reset();
-        open.value = false;
-        router.visit(route('home'));
-    };
-
     if (props.isUpdate) {
-        form.put(route(props.url), { onSuccess: onSuccessCallback });
+        form.put(route(props.url), {
+            onSuccess: () => {
+                usePage().props.flash.success = 'Atendimento atualizado com sucesso.';
+            },
+            onFinish: () => {
+                form.reset();
+                open.value = false;
+                router.visit('home');
+            }
+        });
     } else {
-        form.post(route(props.url), { onSuccess: onSuccessCallback });
+        form.post(route(props.url), {
+            onSuccess: () => {
+                usePage().props.flash.success = 'Atendimento cadastrado com sucesso.';
+            },
+            onFinish: () => {
+                form.reset();
+                open.value = false;
+                router.visit('home');
+            }
+        });
     }
 };
 </script>
