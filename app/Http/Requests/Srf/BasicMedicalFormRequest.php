@@ -4,6 +4,8 @@ namespace App\Http\Requests\Srf;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
 class BasicMedicalFormRequest extends FormRequest
 {
@@ -69,6 +71,7 @@ class BasicMedicalFormRequest extends FormRequest
 
             'cpf.unique' => 'Este CPF já está cadastrado no sistema.',
             'cpf.size' => 'O CPF deve conter 11 caracteres.',
+            'cpf.cpf' => 'O CPF informado é inválido.',
 
             'birth_date.required' => 'A data de nascimento é obrigatória.',
             'birth_date.date' => 'A data de nascimento deve ser uma data válida.',
@@ -105,5 +108,30 @@ class BasicMedicalFormRequest extends FormRequest
             'registered.date' => 'A data de registro deve ser uma data válida.',
             'registered.before_or_equal' => 'A data de registro não pode ser futura.',
         ];
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param Validator $validator
+     * @throws HttpResponseException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        if ($this->expectsJson()) {
+            throw new HttpResponseException(
+                response()->json(['errors' => $validator->errors()], 422)
+            );
+        }
+
+        $errorMessage = $validator->errors()->first();
+
+        throw new HttpResponseException(
+            redirect()
+                ->back()
+                ->withInput()
+                ->withErrors($validator)
+                ->with('error', $errorMessage)
+        );
     }
 }

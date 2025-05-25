@@ -37,7 +37,6 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
-        logger('Session messages --', [session('success')]);
         $flash_messages = [
             'success' => session('success'),
             'error' => session('error'),

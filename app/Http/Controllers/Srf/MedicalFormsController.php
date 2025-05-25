@@ -57,8 +57,8 @@ class MedicalFormsController extends Controller
         $data = $request->validated();
         $basicMedicalForm = $this->basicMedicalFormInstance->edit($data);
         return $basicMedicalForm
-            ? to_route('home')->with('success', 'Atendimento atualizado com sucesso.')
-            : to_route('medical-form')->with('error', 'Dados do atendimento não puderam ser salvos.');
+            ? redirect('home')->with('success', 'Atendimento atualizado com sucesso.')
+            : redirect('home')->with('error', 'Dados do atendimento não puderam ser salvos.');
     }
 
     /**

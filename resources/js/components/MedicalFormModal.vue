@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import RadioInput from '@/components/RadioInput.vue';
 import { MedicalForm } from '@/types';
 import { ref } from 'vue';
-import { router, useForm, usePage } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import { vMaska } from 'maska/vue';
 
 const props = defineProps<{
@@ -48,24 +48,31 @@ const open = ref(false);
 const submit = () => {
     if (props.isUpdate) {
         form.put(route(props.url), {
+            preserveState: false,
             onSuccess: () => {
-                usePage().props.flash.success = 'Atendimento atualizado com sucesso.';
+                console.log(usePage().props.flash);
+                //...
+            },
+            onError: () => {
+                //...
             },
             onFinish: () => {
                 form.reset();
                 open.value = false;
-                router.visit('home');
             }
         });
     } else {
         form.post(route(props.url), {
+            preserveState: false,
             onSuccess: () => {
-                usePage().props.flash.success = 'Atendimento cadastrado com sucesso.';
+                //...
+            },
+            onError: () => {
+                //...
             },
             onFinish: () => {
                 form.reset();
                 open.value = false;
-                router.visit('home');
             }
         });
     }
