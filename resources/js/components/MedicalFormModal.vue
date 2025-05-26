@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import RadioInput from '@/components/RadioInput.vue';
 import { MedicalForm } from '@/types';
 import { ref } from 'vue';
-import { useForm, usePage } from '@inertiajs/vue3';
+import { useForm, usePage, router } from '@inertiajs/vue3';
 import { vMaska } from 'maska/vue';
 
 const props = defineProps<{
@@ -43,39 +43,35 @@ const form = useForm({
 });
 
 const open = ref(false);
-
+const isSubmitting = ref(false);
 
 const submit = () => {
-    if (props.isUpdate) {
-        form.put(route(props.url), {
-            preserveState: false,
-            onSuccess: () => {
-                console.log(usePage().props.flash);
-                //...
-            },
-            onError: () => {
-                //...
-            },
-            onFinish: () => {
-                form.reset();
-                open.value = false;
-            }
-        });
-    } else {
-        form.post(route(props.url), {
-            preserveState: false,
-            onSuccess: () => {
-                //...
-            },
-            onError: () => {
-                //...
-            },
-            onFinish: () => {
-                form.reset();
-                open.value = false;
-            }
-        });
-    }
+    if(isSubmitting.value) return;
+    isSubmitting.value = true;
+
+    const method = props.isUpdate ? 'put' : 'post';
+
+    form[method](route(props.url), {
+        preserveScroll: true,
+        /**
+         * preserveState: false, funciona, porém, quando há erros de validação ocorre
+         * um refresh na pagina e logo, não é possivel visualizar as validações dos campos.
+         * Por isso, usar o router.visit() para atualizar os dados.
+         * */
+        preserveState: true,
+        only: [],
+        onSuccess: () => {
+            form.reset();
+            open.value = false;
+            router.visit('/home');
+        },
+        onError: () => {
+            //...
+        },
+        onFinish: () => {
+            isSubmitting.value = false;
+        }
+    });
 };
 </script>
 

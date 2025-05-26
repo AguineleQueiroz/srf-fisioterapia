@@ -44,8 +44,8 @@ class MedicalFormsController extends Controller
         $data['user_id'] = Auth::id();
         $basicMedicalForm = $this->basicMedicalFormInstance->create($data);
         return $basicMedicalForm
-            ? to_route('home')->with('success', 'Atendimento cadastrado.')
-            : to_route('medical-form')->with('error', 'Dados do atendimento não puderam ser salvos.');
+            ? to_route('dashboard')->with('success', 'Atendimento cadastrado.')
+            : to_route('dashboard')->with('error', 'Dados do atendimento não puderam ser salvos.');
     }
 
     /**
@@ -57,8 +57,8 @@ class MedicalFormsController extends Controller
         $data = $request->validated();
         $basicMedicalForm = $this->basicMedicalFormInstance->edit($data);
         return $basicMedicalForm
-            ? redirect('home')->with('success', 'Atendimento atualizado com sucesso.')
-            : redirect('home')->with('error', 'Dados do atendimento não puderam ser salvos.');
+            ? to_route('dashboard')->with('success', 'Atendimento atualizado com sucesso.')
+            : to_route('dashboard')->with('error', 'Dados do atendimento não puderam ser salvos.');
     }
 
     /**

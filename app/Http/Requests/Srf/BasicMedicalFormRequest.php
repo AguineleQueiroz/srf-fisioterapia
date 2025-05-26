@@ -118,6 +118,12 @@ class BasicMedicalFormRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
+        if ($this->header('X-Inertia')) {
+            throw new HttpResponseException(
+                back()->withErrors($validator)->withInput()
+            );
+        }
+
         if ($this->expectsJson()) {
             throw new HttpResponseException(
                 response()->json(['errors' => $validator->errors()], 422)

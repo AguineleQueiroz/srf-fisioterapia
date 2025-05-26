@@ -148,7 +148,7 @@ class MedicalFormTest extends TestCase
     {
         $response = $this->actingAs($this->user)->post(route('medical-form'), $this->basicMedicalFormData);
         $response->assertStatus(302);
-        $response->assertRedirect(route('home'));
+        $response->assertRedirect(route('dashboard'));
         $response->assertSessionHas('success', 'Atendimento cadastrado.');
     }
 
@@ -168,6 +168,6 @@ class MedicalFormTest extends TestCase
         $this->form1->phone = '(38) 98989-5858';
         $response = $this->actingAs($this->user)->put(route('update-medical-form'), $this->form1->toArray());
         $response->assertStatus(302);
-        $response->assertRedirect(route('home'))->assertSessionHas('success', 'Atendimento atualizado com sucesso.');
+        $response->assertRedirect(route('dashboard'))->assertSessionHas('success', 'Atendimento atualizado com sucesso.');
     }
 }
