@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useForm } from '@inertiajs/vue3';
 import MedicalFormModal from '@/components/MedicalFormModal.vue';
+import RegisterMedicalFormModal from '@/components/RegisterMedicalFormModal.vue';
 
 const items = inject<MedicalForm[]>('items', []);
 
@@ -89,13 +90,14 @@ const submit = () => {
                     <ChevronDown class="text-teal-700" />
                 </td>
             </tr>
+
             <tr :id="'tr-'+item.id" class="expansive-tr hidden text-sm">
-                <td></td>
+                <td class="w-[162px]"></td>
                 <td colspan="4" class="border-b">
                     <!-- Informations -->
                     <div class="border border-t-0 border-r-0 p-4">
                         <h1 class="font-bold mb-2"> Informações: </h1>
-                        <div class="flex flex-col flex-wrap max-h-32">
+                        <div class="flex flex-col flex-wrap lg:max-h-32">
                             <div class="lg:w-[50%]">
                                 <span class="font-[500]">Sexo: </span>
                                 <span class="ms-1">{{item.formatted_gender}}</span>
@@ -148,19 +150,19 @@ const submit = () => {
                     <div class="border border-t-0 border-r-0 border-b-0 p-4">
                         <h1 class="font-bold mb-2">Condições de Saúde: </h1>
                         <div class="flex flex-wrap">
-                            <div class="flex flex-col lg:w-[50%]">
+                            <div class="flex flex-col w-full lg:w-[50%]">
                                 <span class="font-[500]">Diagnóstico clínico: </span>
                                 <span class="mb-2">{{item.diagnosis ?? '---'}}</span>
                             </div>
-                            <div class="lg:w-[50%]">
+                            <div class="w-full lg:w-[50%]">
                                 <span class="font-[500]">Última internação: </span>
                                 <span class="ms-1">{{ item.formatted_last_hospitalization }}</span>
                             </div>
-                            <div class="flex flex-col lg:w-[50%]">
+                            <div class="flex flex-col w-full lg:w-[50%]">
                                 <span class="font-[500]">Comorbidades associadas: </span>
                                 <span class="mb-2">{{item.comorbidity  ?? '---'}}</span>
                             </div>
-                            <div class="lg:w-[50%]">
+                            <div class="w-full lg:w-[50%]">
                                 <span class="font-[500]">Médico responsável: </span>
                                 <span class="ms-1">{{item.doctor_name}}</span>
                             </div>
@@ -168,24 +170,29 @@ const submit = () => {
                     </div>
                 </td>
             </tr>
+
             <tr :id="'tr-footer-'+item.id" class="expansive-tr-footer hidden border-b">
-                <td></td>
+                <td class="w-[162px]"></td>
                 <td colspan="4">
-                    <div class="flex justify-between p-4 border-l">
+                    <div class="flex justify-between p-4 border-l space-x-4">
                         <MedicalFormModal
                             triggerButtonText="Editar"
                             :medicalForm="item"
                             url="update-medical-form"
                             :isUpdate="true"
                         />
-                        <Button name="add_medical_form" class="rounded-sm px-4 hover:bg-teal-900">Adicionar Ficha</Button>
+
+                        <RegisterMedicalFormModal
+                            triggerButtonText="Adicionar Ficha"
+                            :medicalFormId="item.id"
+                            url="add-health-record"
+                        />
 
                         <Button name="list_medical_forms" class="rounded-sm px-4 hover:bg-teal-900">Fichas do Paciente</Button>
 
-
                         <form @submit.prevent="submit" class="flex items-center">
                             <Select v-model="form.attention" name="attention" class="rounded-none" :class="{ 'border-red-500': form.errors.attention }">
-                                <SelectTrigger class="h-9 rounded-none rounded-l-md">
+                                <SelectTrigger class="h-9 rounded-none rounded-l-sm">
                                     <SelectValue placeholder="Atenção:" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -196,7 +203,7 @@ const submit = () => {
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
-                            <Button type="submit"  class="w-full hover:bg-teal-900 rounded-none rounded-r-md border-0"  :disabled="form.processing">
+                            <Button type="submit"  class="w-full hover:bg-teal-900 rounded-none rounded-r-sm border-0"  :disabled="form.processing">
                                 <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
                                 Encaminhar
                             </Button>
