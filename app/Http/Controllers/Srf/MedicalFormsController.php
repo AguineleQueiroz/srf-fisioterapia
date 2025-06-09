@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Srf;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Srf\BasicMedicalFormRequest;
+use App\Http\Requests\Srf\HealthRecordRequest;
 use App\Models\BasicMedicalForm;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
+use Nette\NotImplementedException;
 
 class MedicalFormsController extends Controller
 {
@@ -59,6 +61,14 @@ class MedicalFormsController extends Controller
         return $basicMedicalForm
             ? to_route('dashboard')->with('success', 'Atendimento atualizado com sucesso.')
             : to_route('dashboard')->with('error', 'Dados do atendimento não puderam ser salvos.');
+    }
+
+    /**
+     * @param HealthRecordRequest $healthRecord
+     * @return RedirectResponse
+     */
+    public function storeHealthRecord(HealthRecordRequest $healthRecord): RedirectResponse {
+        throw new NotImplementedException();
     }
 
     /**

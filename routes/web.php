@@ -14,7 +14,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', [MedicalFormsController::class, 'index'])->name('dashboard');
     Route::post('/medical-form', [MedicalFormsController::class, 'store'])->name('medical-form');
     Route::put('/update-medical-form', [MedicalFormsController::class, 'update'])->name('update-medical-form');
-    Route::post('/add-medical-form', [MedicalFormsController::class, 'store'])->name('add-medical-form');
+    Route::post('/add-health-record', [MedicalFormsController::class, 'storeHealthRecord'])->name('add-health-record');
 
     Route::get('/user/basic-medical-forms/{user_id}', [MedicalFormsController::class, 'myBasicMedicalForms'])->name('my-medical-forms');
     Route::get('/medical-forms', [MedicalFormsController::class, 'allBasicMedicalForms'])->name('medical-forms');

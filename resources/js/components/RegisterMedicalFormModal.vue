@@ -24,7 +24,7 @@ const form = useForm({
 const open = ref(false);
 
 const submit = () => {
-    form.post(route('add-medical-form'), {
+    form.post(route('add-health-record'), {
         onFinish: () => {
             form.reset();
         }
