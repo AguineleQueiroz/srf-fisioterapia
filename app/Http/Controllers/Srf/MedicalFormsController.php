@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Srf\BasicMedicalFormRequest;
 use App\Http\Requests\Srf\HealthRecordRequest;
 use App\Models\BasicMedicalForm;
+use App\Models\PrimaryMedicalForm;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,7 @@ use Nette\NotImplementedException;
 class MedicalFormsController extends Controller
 {
     protected BasicMedicalForm $basicMedicalFormInstance;
+    protected PrimaryMedicalForm $primaryMedicalFormInstance;
 
     /**
      * @param BasicMedicalForm $basicMedicalFormInstance
@@ -56,7 +58,7 @@ class MedicalFormsController extends Controller
      */
     public function update(BasicMedicalFormRequest $request): Response|RedirectResponse|array
     {
-        $data = $request->validated();
+        $data = $request->toArray();
         $basicMedicalForm = $this->basicMedicalFormInstance->edit($data);
         return $basicMedicalForm
             ? to_route('dashboard')->with('success', 'Atendimento atualizado com sucesso.')
@@ -67,8 +69,12 @@ class MedicalFormsController extends Controller
      * @param HealthRecordRequest $healthRecord
      * @return RedirectResponse
      */
-    public function storeHealthRecord(HealthRecordRequest $healthRecord): RedirectResponse {
-        throw new NotImplementedException();
+    public function storeHealthRecord(HealthRecordRequest $healthRecord): RedirectResponse
+    {
+        $primaryMedicalForm = $this->primaryMedicalFormInstance->create($healthRecord->toArray());
+        return $primaryMedicalForm
+            ? to_route('dashboard')->with('success', 'Ficha cadastrada com sucesso.')
+            : to_route('dashboard')->with('error', 'Dados da ficha não puderam ser salvos.');
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Scopes\TenantScope;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -62,6 +63,18 @@ class PrimaryMedicalForm extends Model
         'tenant_id',
         'user_id',
     ];
+
+    public function create(array $data): ?PrimaryMedicalForm {
+        try {
+            return self::query()->create($data);
+        } catch (Exception $exception) {
+            logger()->error(
+                'Error trying to save primary medical form record: '.$exception->getMessage(),
+                [ 'exception' => $exception ]
+            );
+            return null;
+        }
+    }
 
     public function basicMedicalForms(): BelongsTo
     {

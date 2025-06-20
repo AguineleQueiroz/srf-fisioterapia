@@ -89,7 +89,7 @@ class BasicMedicalForm extends Model
      * @param array $data
      * @return BasicMedicalForm|null
      */
-    public function create(array $data): BasicMedicalForm | null
+    public function create(array $data): ?BasicMedicalForm
     {
         try {
             return self::query()->create($data);

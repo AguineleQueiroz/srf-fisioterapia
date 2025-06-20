@@ -48,7 +48,7 @@ const isOpen = computed({
                 max-w-[65%] translate-x-[-50%] translate-y-[-50%] rounded-sm bg-white
                 shadow-md focus:outline-none z-[100]"
             >
-                <DialogTitle class="m-0 mb-4 font-[500] text-gray-800 p-6 border-b">
+                <DialogTitle class="m-0 font-[500] text-gray-800 p-6 border-b">
                     {{ title }}
                 </DialogTitle>
 
