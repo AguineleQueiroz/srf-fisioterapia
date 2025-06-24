@@ -6,7 +6,7 @@ import Checkbox from '@/components/ui/checkbox/Checkbox.vue';
 import { Label } from '@/components/ui/label';
 import { useForm, usePage } from '@inertiajs/vue3';
 import { DialogClose } from 'radix-vue';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 
 const props = defineProps<{
     medicalFormId: number;
