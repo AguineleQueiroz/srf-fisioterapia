@@ -11,8 +11,8 @@ const updateItems = inject<(newItems: MedicalForm[]) => void>('updateItems', () 
 watch(switchState, async () => {
     try {
         const response = switchState.value
-            ? await fetch(`/user/basic-medical-forms/${user.id}`)
-            : await fetch(`/medical-forms`);
+            ? await fetch(`/medical-forms/${user.id}`)
+            : await fetch(`/medical-forms/all`);
         const data = await response.json();
         updateItems(data.data);
     } catch (error) {

@@ -63,7 +63,7 @@ const submit = () => {
         onSuccess: () => {
             form.reset();
             open.value = false;
-            router.visit('/home');
+            router.visit('/medical-forms');
         },
         onError: () => {
             //...

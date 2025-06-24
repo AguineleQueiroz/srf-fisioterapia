@@ -8,7 +8,7 @@ import MedicalFormModal from '@/components/MedicalFormModal.vue';
 
 const searchQuery = ref('');
 const search = () => {
-    if (searchQuery.value.trim()) router.get(route('dashboard'), { search: searchQuery.value });
+    if (searchQuery.value.trim()) router.get(route('forms.index'), { search: searchQuery.value });
 };
 </script>
 

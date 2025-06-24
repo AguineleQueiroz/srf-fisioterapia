@@ -24,34 +24,34 @@ class HealthRecordRequest extends FormRequest
     {
         return [
             'pain' => 'boolean',
-            'pain_description' => 'required_if:pain,true|string|max:200',
+            'pain_description' => 'nullable|required_if:pain,true|string|max:200',
 
             'disability' => 'boolean',
-            'disability_description' => 'required_if:disability,true|string|max:200',
+            'disability_description' => 'nullable|required_if:disability,true|string|max:200',
 
             'musculoskeletal' => 'boolean',
-            'musculoskeletal_description' => 'required_if:musculoskeletal,true|string|max:200',
+            'musculoskeletal_description' => 'nullable|required_if:musculoskeletal,true|string|max:200',
 
             'neurological' => 'boolean',
-            'neurological_description' => 'required_if:neurological,true|string|max:200',
+            'neurological_description' => 'nullable|required_if:neurological,true|string|max:200',
 
             'urogynaecological' => 'boolean',
-            'urogynaecological_description' => 'required_if:urogynaecological,true|string|max:200',
+            'urogynaecological_description' => 'nullable|required_if:urogynaecological,true|string|max:200',
 
             'cardiovascular' => 'boolean',
-            'cardiovascular_description' => 'required_if:cardiovascular,true|string|max:200',
+            'cardiovascular_description' => 'nullable|required_if:cardiovascular,true|string|max:200',
 
             'respiratory' => 'boolean',
-            'respiratory_description' => 'required_if:respiratory,true|string|max:200',
+            'respiratory_description' => 'nullable|required_if:respiratory,true|string|max:200',
 
             'oncological' => 'boolean',
-            'oncological_description' => 'required_if:oncological,true|string|max:200',
+            'oncological_description' => 'nullable|required_if:oncological,true|string|max:200',
 
             'pediatric' => 'boolean',
-            'pediatric_description' => 'required_if:pediatric,true|string|max:200',
+            'pediatric_description' => 'nullable|required_if:pediatric,true|string|max:200',
 
             'multiple_conditions' => 'boolean',
-            'multiple_conditions_description' => 'required_if:multiple_conditions,true|string|max:200',
+            'multiple_conditions_description' => 'nullable|required_if:multiple_conditions,true|string|max:200',
 
             'complaint' => 'nullable|string|max:200',
             'physical_exam_findings' => 'nullable|string|max:200',

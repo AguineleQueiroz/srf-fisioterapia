@@ -29,7 +29,7 @@ import { Head, Link } from '@inertiajs/vue3';
                 </p>
 
                 <div class="mt-8 lg:mt-0">
-                    <Link :href="route('dashboard')" class="bg-teal-700 hover:bg-teal-900 text-white p-4 rounded-sm">
+                    <Link :href="route('forms.index')" class="bg-teal-700 hover:bg-teal-900 text-white p-4 rounded-sm">
                         VOLTAR PARA PÁGINA PRINCIPAL
                     </Link>
                 </div>

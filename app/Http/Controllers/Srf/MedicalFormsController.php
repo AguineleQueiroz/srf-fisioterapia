@@ -17,7 +17,6 @@ use Nette\NotImplementedException;
 class MedicalFormsController extends Controller
 {
     protected BasicMedicalForm $basicMedicalFormInstance;
-    protected PrimaryMedicalForm $primaryMedicalFormInstance;
 
     /**
      * @param BasicMedicalForm $basicMedicalFormInstance
@@ -48,8 +47,8 @@ class MedicalFormsController extends Controller
         $data['user_id'] = Auth::id();
         $basicMedicalForm = $this->basicMedicalFormInstance->create($data);
         return $basicMedicalForm
-            ? to_route('dashboard')->with('success', 'Atendimento cadastrado.')
-            : to_route('dashboard')->with('error', 'Dados do atendimento não puderam ser salvos.');
+            ? to_route('forms.index')->with('success', 'Atendimento cadastrado.')
+            : to_route('forms.index')->with('error', 'Dados do atendimento não puderam ser salvos.');
     }
 
     /**
@@ -61,27 +60,15 @@ class MedicalFormsController extends Controller
         $data = $request->toArray();
         $basicMedicalForm = $this->basicMedicalFormInstance->edit($data);
         return $basicMedicalForm
-            ? to_route('dashboard')->with('success', 'Atendimento atualizado com sucesso.')
-            : to_route('dashboard')->with('error', 'Dados do atendimento não puderam ser salvos.');
-    }
-
-    /**
-     * @param HealthRecordRequest $healthRecord
-     * @return RedirectResponse
-     */
-    public function storeHealthRecord(HealthRecordRequest $healthRecord): RedirectResponse
-    {
-        $primaryMedicalForm = $this->primaryMedicalFormInstance->create($healthRecord->toArray());
-        return $primaryMedicalForm
-            ? to_route('dashboard')->with('success', 'Ficha cadastrada com sucesso.')
-            : to_route('dashboard')->with('error', 'Dados da ficha não puderam ser salvos.');
+            ? to_route('forms.index')->with('success', 'Atendimento atualizado com sucesso.')
+            : to_route('forms.index')->with('error', 'Dados do atendimento não puderam ser salvos.');
     }
 
     /**
      * @param $userId
      * @return LengthAwarePaginator
      */
-    public function myBasicMedicalForms($userId): LengthAwarePaginator
+    public function myForms($userId): LengthAwarePaginator
     {
         return $this->basicMedicalFormInstance->basicMedicalFormsByUserId($userId);
     }
@@ -89,7 +76,7 @@ class MedicalFormsController extends Controller
     /**
      * @return LengthAwarePaginator
      */
-    public function allBasicMedicalForms(): LengthAwarePaginator
+    public function allForms(): LengthAwarePaginator
     {
         return $this->basicMedicalFormInstance->basicMedicalForms();
     }

@@ -27,7 +27,7 @@ defineProps<Props>();
             </Link>
         </DropdownMenuItem>
         <DropdownMenuItem :as-child="true">
-            <Link class="block w-full" :href="route('policies')">
+            <Link class="block w-full" :href="route('security.policy')">
                 <ScrollText class="mr-2 h-4 w-4" />
                 Politica de privacidade
             </Link>

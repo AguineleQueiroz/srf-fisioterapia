@@ -178,14 +178,14 @@ const submit = () => {
                         <MedicalFormModal
                             triggerButtonText="Editar"
                             :medicalForm="item"
-                            url="update-medical-form"
+                            url="forms.update"
                             :isUpdate="true"
                         />
 
                         <RegisterMedicalFormModal
                             triggerButtonText="Adicionar Ficha"
                             :medicalFormId="item.id"
-                            url="add-health-record"
+                            url="record.store"
                         />
 
                         <Button name="list_medical_forms" class="rounded-sm px-4 hover:bg-teal-900">Fichas do Paciente</Button>

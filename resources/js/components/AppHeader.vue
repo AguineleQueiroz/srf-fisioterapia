@@ -45,7 +45,7 @@ const activeItemStyles = computed(
 const mainNavItems: NavItem[] = [
     {
         title: 'Lista de Atendimentos',
-        href: '/home',
+        href: '/medical-forms',
         icon: AlignJustify,
     },
 ];
@@ -99,7 +99,7 @@ const mainNavItems: NavItem[] = [
                     </Sheet>
                 </div>
 
-                <Link :href="route('dashboard')" class="flex items-center gap-x-2">
+                <Link :href="route('forms.index')" class="flex items-center gap-x-2">
                     <AppLogo class="hidden w-24 xl:block" />
                 </Link>
 

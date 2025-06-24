@@ -26,7 +26,7 @@ provide('updateItems', updateItems);
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
-        href: '/home',
+        href: '/medical-forms',
     },
 ];
 </script>
