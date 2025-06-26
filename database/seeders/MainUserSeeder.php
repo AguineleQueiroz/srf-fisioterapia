@@ -26,8 +26,6 @@ class MainUserSeeder extends Seeder
             'phone' => '38998427814',
             'professional_type' => 'admin',
             'document' => '000000-A',
-            'address' => 'Middle Street, 123',
-            'city' => 'Datas',
             'tenant_id' => 1, //Datas
             'remember_token' => Str::random(10),
         ]);

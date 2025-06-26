@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             TenantSeeder::class,
             MainUserSeeder::class,
+            AddressSeeder::class,
             UserTypeSeeder::class,
             MedicalFormsSeeder::class,
             RolesAndPermissionsSeeder::class,

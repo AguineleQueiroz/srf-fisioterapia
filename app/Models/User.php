@@ -8,6 +8,8 @@ use Database\Factories\UserFactory;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -33,8 +35,6 @@ class User extends Authenticatable
         'phone',
         'professional_type',
         'document',
-        'address',
-        'city',
         'tenant_id'
     ];
 
@@ -62,7 +62,7 @@ class User extends Authenticatable
             'phone' => 'required|string|min:11|max:16',
             'professional_type' => 'required|string|in:admin,manager,basic,primary,secondary,other',
             // crefito or other professional registration document
-            'document' => 'required|string|min:6',
+            'document' => 'nullable|string|unique:users,document',
             'address' => 'required|string|min:6',
             'city' => 'required|string',
             'tenant_id' => 'required|integer|exists:tenants,id',
@@ -109,6 +109,14 @@ class User extends Authenticatable
     public function getRouteKeyName(): string
     {
         return 'ulid';
+    }
+
+    /**
+     * @return MorphMany
+     */
+    public function address(): MorphMany
+    {
+        return $this->morphMany(Address::class, 'addressable');
     }
 
     public function tenant(): BelongsTo

@@ -23,8 +23,6 @@ return new class extends Migration
                 $table->string('phone', 16);
                 $table->enum('professional_type', ['admin', 'manager','basic', 'primary', 'secondary', 'other']);
                 $table->string('document', 35)->unique()->nullable(); // Professional registration document
-                $table->string('address');
-                $table->string('city');
                 $table->foreignId('tenant_id')->constrained('tenants')->cascadeOnDelete();
                 $table->rememberToken();
                 $table->timestamps();

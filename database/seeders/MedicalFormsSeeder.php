@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Address;
+use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -20,14 +22,25 @@ class MedicalFormsSeeder extends Seeder
             $cpf = rand(0, 1) ? $this->generateValidCPF() : null;
             $tenant = $faker->randomElement(['1', '2']);
             $user_id = $faker->randomElement([1, 2, 3, 4]);
-            $basicForm = (new BasicMedicalForm)->create([
+
+            $patient = Patient::create([
                 'patient_name' => $faker->name,
                 'cpf' => $cpf,
                 'birth_date' => $faker->date(),
                 'gender' => $faker->randomElement(['male', 'female']),
                 'phone' => $faker->phoneNumber,
                 'card_sus' => Str::random(15),
+            ]);
+
+            Address::create([
+                'addressable_id' => $patient->id,
+                'addressable_type' => 'App\Models\Patient',
                 'address' => $faker->address,
+                'city' => $faker->city,
+            ]);
+
+            $basicForm = (new BasicMedicalForm)->create([
+                'patient_id' => $patient->id,
                 'primary_care_clinic' => $faker->company,
                 'community_health_worker' => $faker->name,
                 'diagnosis' => $faker->optional()->text(200),

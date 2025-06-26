@@ -3,12 +3,13 @@
 namespace Database\Factories;
 
 use App\Models\Tenant;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory<User>
  */
 class UserFactory extends Factory
 {
@@ -34,8 +35,6 @@ class UserFactory extends Factory
             'phone' => fake()->phoneNumber(),
             'professional_type' => fake()->randomElement(['primary', 'secondary']),
             'document' => fake()->unique()->regexify('[0-9]{4}-[A-Z]{1}'),
-            'address' => fake()->address(),
-            'city' => fake()->city(),
             'tenant_id' => $tenant->id, // Datas and Presidente Kubitschek
             'remember_token' => Str::random(10),
         ];

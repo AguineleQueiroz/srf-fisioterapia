@@ -15,13 +15,6 @@ return new class extends Migration
             Schema::create('basic_medical_forms', function (Blueprint $table) {
                 $table->id();
                 $table->ulid()->unique();
-                $table->string('patient_name');
-                $table->string('cpf')->unique()->nullable();
-                $table->date('birth_date');
-                $table->enum('gender', ['male', 'female']);
-                $table->string('phone')->nullable();
-                $table->string('card_sus')->unique();
-                $table->string('address');
                 $table->string('primary_care_clinic');
                 $table->string('community_health_worker');
                 $table->text('diagnosis')->nullable();
@@ -33,6 +26,7 @@ return new class extends Migration
                 $table->date('registered')->index();
                 $table->foreignId('tenant_id')->constrained('tenants')->cascadeOnDelete();
                 $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+                $table->foreignId('patient_id')->constrained('patients')->cascadeOnDelete();
                 $table->timestamps();
             });
         }

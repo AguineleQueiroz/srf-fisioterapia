@@ -23,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('cpf', function ($attribute, $value, $parameters, $validator) {
             return $this->validateCpf($value);
         });
+
+        Validator::extend('crefito', function ($attribute, $value, $parameters, $validator) {
+            return $this->validateCrefito($value);
+        });
     }
 
     protected function validateCpf(string $cpf): bool {
@@ -47,5 +51,9 @@ class AppServiceProvider extends ServiceProvider
 
         return $cpf[9] === $result(9, 9) &&
             $cpf[10] === $result(10, 10);
+    }
+
+    protected function validateCrefito(string $crefito): bool {
+       return preg_match('/^\d{4}-[A-Za-z]$/', trim($crefito)); // exemplo: 0000-K
     }
 }

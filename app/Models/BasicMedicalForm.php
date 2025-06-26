@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -22,13 +21,6 @@ class BasicMedicalForm extends Model
     protected $table = 'basic_medical_forms';
 
     protected $fillable = [
-        'patient_name',
-        'cpf',
-        'birth_date',
-        'gender',
-        'phone',
-        'card_sus',
-        'address',
         'primary_care_clinic',
         'community_health_worker',
         'diagnosis',
@@ -38,15 +30,13 @@ class BasicMedicalForm extends Model
         'doctor_name',
         'priority',
         'registered',
-        'tenant_id',
+        'tenant_id', // local/city
         'user_id',
+        'patient_id', // patient related to the form
     ];
 
     protected $appends = [
         'formatted_registered',
-        'formatted_cpf',
-        'formatted_gender',
-        'formatted_birthdate',
         'formatted_last_hospitalization'
     ];
 
@@ -56,6 +46,7 @@ class BasicMedicalForm extends Model
      */
     public function basicMedicalForms($search = null): LengthAwarePaginator
     {
+        //TODO: refatorar para se adequar a estrutura de tabelas - buscar paciente relacionado
         return self::query()
             ->when(
                 $search,
@@ -126,10 +117,16 @@ class BasicMedicalForm extends Model
         }
     }
 
+    public function patient(): BelongsTo
+    {
+        return $this->belongsTo(Patient::class, 'patient_id');
+    }
+
     /**
      * @return HasMany
      */
-    public function primaryMedicalForms(): HasMany {
+    public function primaryMedicalForms(): HasMany
+    {
         return $this->hasMany(PrimaryMedicalForm::class, 'basic_medical_form_id');
     }
 
@@ -155,37 +152,6 @@ class BasicMedicalForm extends Model
     public function getFormattedRegisteredAttribute(): string
     {
         return Carbon::parse($this->attributes['registered'])->format('d/m/Y');
-    }
-
-    /**
-     * @return string
-     */
-    public function getFormattedCpfAttribute(): string
-    {
-        if($this->attributes['cpf']) {
-            $cpf = preg_replace('/\D/', '', $this->attributes['cpf']);
-            return substr($cpf, 0, 3) . '.'
-                . substr($cpf, 3, 3) . '.'
-                . substr($cpf, 6, 3) . '-'
-                . substr($cpf, 9, 2);
-        }
-        return '---';
-    }
-
-    /**
-     * @return string
-     */
-    public function getFormattedGenderAttribute(): string
-    {
-        return $this->attributes['gender'] === 'male' ? 'Masculino' : 'Feminino';
-    }
-
-    /**
-     * @return string
-     */
-    public function getFormattedBirthdateAttribute(): string
-    {
-        return Carbon::parse($this->attributes['birth_date'])->format('d/m/Y');
     }
 
     /**
