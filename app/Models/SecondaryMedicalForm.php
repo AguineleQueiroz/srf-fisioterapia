@@ -25,7 +25,7 @@ class SecondaryMedicalForm extends Model
         'physiotherapeutic_diagnosis',
         'criteria',
         'justification',
-        'tenant_id',
+        'basic_medical_form_id',
         'user_id',
     ];
 
@@ -34,18 +34,12 @@ class SecondaryMedicalForm extends Model
         return $this->belongsTo(BasicMedicalForm::class, 'basic_medical_form_id');
     }
 
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(Tenant::class);
-    }
-
     protected static function boot(): void
     {
         parent::boot();
         static::creating(function ($model) {
             $model->ulid = (string) Str::ulid();
         });
-        static::addGlobalScope(new TenantScope);
     }
 
     public function getRouteKeyName(): string

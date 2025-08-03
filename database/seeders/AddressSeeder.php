@@ -13,7 +13,7 @@ class AddressSeeder extends Seeder
      */
     public function run(): void
     {
-        Address::create([
+        (new Address)->create([
             'addressable_id' => 1,
             'addressable_type' => 'App\Models\User',
             'address' => 'Middle Street, 123',

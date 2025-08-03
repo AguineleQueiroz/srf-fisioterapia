@@ -73,7 +73,6 @@ return new class extends Migration
                     ->constrained('basic_medical_forms')
                     ->cascadeOnDelete();
 
-                $table->foreignId('tenant_id')->constrained('tenants')->cascadeOnDelete();
                 $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
                 $table->timestamps();
             });

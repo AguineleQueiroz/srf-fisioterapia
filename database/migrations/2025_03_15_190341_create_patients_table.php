@@ -21,6 +21,7 @@ return new class extends Migration
                 $table->enum('gender', ['male', 'female']);
                 $table->string('phone')->nullable();
                 $table->string('card_sus')->unique();
+                $table->foreignId('tenant_id')->constrained('tenants')->cascadeOnDelete();
                 $table->timestamps();
             });
         }

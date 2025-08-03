@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Scopes\TenantScope;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Str;
@@ -27,6 +28,24 @@ class Address extends Model
             'city' => 'required|string',
         ];
     }
+
+    /**
+     * @param array $data
+     * @return Address|null
+     */
+    public function create(array $data): ?Address
+    {
+        try {
+            return self::query()->create($data);
+        } catch (Exception $exception) {
+            logger()->error(
+                'Error trying to save address: '.$exception->getMessage(),
+                [ 'exception' => $exception ]
+            );
+            return null;
+        }
+    }
+
     public function addressable(): MorphTo
     {
         return $this->morphTo();
@@ -38,7 +57,7 @@ class Address extends Model
         static::creating(function ($model) {
             $model->ulid = (string) Str::ulid();
         });
-        static::addGlobalScope(new TenantScope);
+        //static::addGlobalScope(new TenantScope);
     }
 
     public function getRouteKeyName(): string

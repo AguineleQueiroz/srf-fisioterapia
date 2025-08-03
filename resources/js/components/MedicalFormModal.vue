@@ -21,15 +21,16 @@ const props = defineProps<{
 
 const medicalForm = props.medicalForm;
 const user = usePage().props.auth.user
+console.log(props.medicalForm)
 const form = useForm({
     ...(medicalForm.id ? {id: medicalForm.id} : {}),
-    patient_name: medicalForm.patient_name ?? '',
-    gender: medicalForm.gender ?? '',
-    birth_date: medicalForm.birth_date ?? '',
-    cpf: medicalForm.cpf ?? '',
-    card_sus: medicalForm.card_sus ?? '',
-    phone: medicalForm.phone ?? '',
-    address: medicalForm.address ?? '',
+    patient_name: medicalForm.patient?.patient_name ?? '',
+    gender: medicalForm.patient?.gender ?? '',
+    birth_date: medicalForm.patient?.birth_date ?? '',
+    cpf: medicalForm.patient?.cpf ?? '',
+    card_sus: medicalForm.patient?.card_sus ?? '',
+    phone: medicalForm.patient?.phone ?? '',
+    address: medicalForm.patient?.address[0].address ?? '',
     primary_care_clinic: medicalForm.primary_care_clinic ?? '',
     community_health_worker: medicalForm.community_health_worker ?? '',
     diagnosis: medicalForm.diagnosis ?? '',

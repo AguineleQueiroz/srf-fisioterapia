@@ -5,7 +5,9 @@ namespace Database\Seeders;
 use App\Models\Address;
 use App\Models\Patient;
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Faker\Factory as Faker;
 use App\Models\BasicMedicalForm;
@@ -17,22 +19,37 @@ class MedicalFormsSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create('pt_BR');
-        User::factory()->count(3)->create(); //Id's = 2, 3, 4
+
+        $users = collect();
+        while ($users->count() < 3) {
+            try {
+                $remaining = 3 - $users->count();
+                $newUsers = User::factory()->count($remaining)->create();
+                $users = $users->concat($newUsers);
+            } catch (QueryException $exception) {
+                if ($exception->getCode() == 23000) {
+                    continue;
+                }
+                throw $exception;
+            }
+        }
+
         for ($i = 0; $i < 10; $i++) {
             $cpf = rand(0, 1) ? $this->generateValidCPF() : null;
             $tenant = $faker->randomElement(['1', '2']);
             $user_id = $faker->randomElement([1, 2, 3, 4]);
 
-            $patient = Patient::create([
+            $patient = (new Patient)->create([
                 'patient_name' => $faker->name,
                 'cpf' => $cpf,
                 'birth_date' => $faker->date(),
                 'gender' => $faker->randomElement(['male', 'female']),
                 'phone' => $faker->phoneNumber,
                 'card_sus' => Str::random(15),
+                'tenant_id' => $tenant,
             ]);
 
-            Address::create([
+            (new Address)->create([
                 'addressable_id' => $patient->id,
                 'addressable_type' => 'App\Models\Patient',
                 'address' => $faker->address,
@@ -50,7 +67,6 @@ class MedicalFormsSeeder extends Seeder
                 'doctor_name' => $faker->name,
                 'priority' => $faker->randomElement(['low', 'medium', 'high']),
                 'registered' => $faker->date(),
-                'tenant_id' => $tenant,
                 'user_id' => $user_id
             ]);
 
@@ -89,7 +105,6 @@ class MedicalFormsSeeder extends Seeder
                     'functional_condition' => $faker->optional()->text(200),
                     'environmental_factors' => $faker->optional()->text(200),
                     'physiotherapeutic_diagnosis' => $faker->optional()->text(200),
-                    'tenant_id' => $tenant,
                     'user_id' => $user_id
                 ];
 
@@ -100,7 +115,7 @@ class MedicalFormsSeeder extends Seeder
 
             for ($k = 0; $k < $secondaryFormsCount; $k++) {
                 (new SecondaryMedicalForm)->create([
-                    'basic_medical_form_id' => $basicForm->id, // Adiciona a chave estrangeira
+                    'basic_medical_form_id' => $basicForm->id,
                     'functional_condition' => $faker->optional()->text(200),
                     'offered_treatment' => $faker->optional()->text(200),
                     'functional_progress' => $faker->optional()->text(200),
@@ -110,7 +125,6 @@ class MedicalFormsSeeder extends Seeder
                     'physiotherapeutic_diagnosis' => $faker->optional()->text(200),
                     'criteria' => $faker->optional()->text(200),
                     'justification' => $faker->optional()->text(200),
-                    'tenant_id' => $tenant,
                     'user_id' => $user_id
                 ]);
             }

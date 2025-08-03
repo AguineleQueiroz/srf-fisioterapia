@@ -30,7 +30,6 @@ class BasicMedicalForm extends Model
         'doctor_name',
         'priority',
         'registered',
-        'tenant_id', // local/city
         'user_id',
         'patient_id', // patient related to the form
     ];
@@ -46,17 +45,18 @@ class BasicMedicalForm extends Model
      */
     public function basicMedicalForms($search = null): LengthAwarePaginator
     {
-        //TODO: refatorar para se adequar a estrutura de tabelas - buscar paciente relacionado
         return self::query()
+            ->with(['patient', 'patient.address', 'primaryMedicalForms', 'secondaryMedicalForms'])
             ->when(
                 $search,
                 fn($query) =>
-                    $query->where('patient_name', 'like', '%' . $search . '%')
-                        ->orWhere('cpf', 'like', '%' . $search . '%')
-                        ->orWhere('card_sus', 'like', '%' . $search . '%')
+                    $query->select('*')->whereHas('patient', function($q) use ($search) {
+                        $q->where('patient_name', 'like', '%' . $search . '%')
+                            ->orWhere('cpf', 'like', '%' . $search . '%')
+                            ->orWhere('card_sus', 'like', '%' . $search . '%');
+                    })
 
             )
-            ->with(['primaryMedicalForms', 'secondaryMedicalForms'])
             ->orderByDesc('created_at')
             ->paginate(7)
             ->withQueryString();
@@ -70,7 +70,7 @@ class BasicMedicalForm extends Model
     {
         return self::query()
             ->where('user_id', $userId)
-            ->with(['primaryMedicalForms', 'secondaryMedicalForms'])
+            ->with(['patient', 'patient.address', 'primaryMedicalForms', 'secondaryMedicalForms'])
             ->orderByDesc('created_at')
             ->paginate(7)
             ->withQueryString();
@@ -119,7 +119,7 @@ class BasicMedicalForm extends Model
 
     public function patient(): BelongsTo
     {
-        return $this->belongsTo(Patient::class, 'patient_id');
+        return $this->belongsTo(Patient::class, 'patient_id')->withoutGlobalScopes();
     }
 
     /**
@@ -136,14 +136,6 @@ class BasicMedicalForm extends Model
     public function secondaryMedicalForms(): HasMany
     {
         return $this->hasMany(SecondaryMedicalForm::class, 'basic_medical_form_id');
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(Tenant::class);
     }
 
     /**
@@ -171,7 +163,6 @@ class BasicMedicalForm extends Model
         static::creating(function ($model) {
             $model->ulid = (string) Str::ulid();
         });
-        static::addGlobalScope(new TenantScope);
     }
 
     /**

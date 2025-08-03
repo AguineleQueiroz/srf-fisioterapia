@@ -83,8 +83,8 @@ const submit = () => {
                 <td class="flex justify-center p-4 w-[162px]">
                     <Icon name="circle" size="24" :color="color(item.priority)" stroke-width="1" />
                 </td>
-                <td class="p-4 text-center w-[454px]">{{ item.patient_name }}</td>
-                <td class="p-4 text-center w-[194px]">{{ item.formatted_cpf || '---' }}</td>
+                <td class="p-4 text-center w-[454px]">{{ item.patient.patient_name }}</td>
+                <td class="p-4 text-center w-[194px]">{{ item.patient.formatted_cpf || '---' }}</td>
                 <td class="p-4 text-center w-[247px]">{{ item.formatted_registered }}</td>
                 <td class="flex justify-center p-4 w-[124px]" @click="toggleExpansiveRows(item.id)">
                     <ChevronDown class="text-teal-700" />
@@ -100,27 +100,27 @@ const submit = () => {
                         <div class="flex flex-col flex-wrap lg:max-h-32">
                             <div class="lg:w-[50%]">
                                 <span class="font-[500]">Sexo: </span>
-                                <span class="ms-1">{{item.formatted_gender}}</span>
+                                <span class="ms-1">{{item.patient.formatted_gender}}</span>
                             </div>
                             <div class="lg:w-[50%]">
                                 <span class="font-[500]">Data de nascimento: </span>
-                                <span class="ms-1">{{item.formatted_birthdate}}</span>
+                                <span class="ms-1">{{item.patient.formatted_birthdate}}</span>
                             </div>
                             <div class="lg:w-[50%]">
                                 <span class="font-[500]">Idade: </span>
-                                <span class="ms-1">{{ calculateAge(item.birth_date) }}</span>
+                                <span class="ms-1">{{ calculateAge(item.patient.birth_date) }}</span>
                             </div>
                             <div class="lg:w-[50%]">
                                 <span class="font-[500]">Endereço: </span>
-                                <span class="ms-1">{{item.address}}</span>
+                                <span class="ms-1">{{item.patient.address[0].address}}</span>
                             </div>
                             <div class="lg:w-[50%]">
                                 <span class="font-[500]">Número do cartão SUS: </span>
-                                <span class="ms-1">{{item.card_sus}}</span>
+                                <span class="ms-1">{{item.patient.card_sus}}</span>
                             </div>
                             <div class="lg:w-[50%]">
                                 <span class="font-[500]">Telefone: </span>
-                                <span class="ms-1">{{item.phone}}</span>
+                                <span class="ms-1">{{item.patient.phone}}</span>
                             </div>
                             <div class="lg:w-[50%]">
                                 <span class="font-[500]">Data do cadastro: </span>

@@ -4,8 +4,10 @@ namespace App\Models;
 
 use App\Models\Scopes\TenantScope;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -26,6 +28,7 @@ class Patient extends Model
         'gender',
         'phone',
         'card_sus',
+        'tenant_id', // local/city
     ];
 
     protected $appends = [
@@ -35,19 +38,45 @@ class Patient extends Model
     ];
 
     /**
+     * @param array $data
+     * @return Patient|null
+     */
+    public function create(array $data): ?Patient
+    {
+        try {
+            return self::query()->create($data);
+        } catch (Exception $exception) {
+            logger()->error(
+                'Error trying to save patient: '.$exception->getMessage(),
+                [ 'exception' => $exception ]
+            );
+            return null;
+        }
+    }
+
+    /**
      * @return morphMany
      */
     public function address(): morphMany
     {
         return $this->morphMany(Address::class, 'addressable');
+        //return $this->morphMany(Address::class, 'addressable_type', 'addressable_id');
     }
 
     /**
      * @return HasMany
      */
-    public function forms(): HasMany
+    public function BasicMedicalForm(): HasMany
     {
         return $this->hasMany(BasicMedicalForm::class, 'patient_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
     }
 
     /**
@@ -55,8 +84,9 @@ class Patient extends Model
      */
     public function getFormattedCpfAttribute(): string
     {
-        if($this->attributes['cpf']) {
-            $cpf = preg_replace('/\D/', '', $this->attributes['cpf']);
+        logger()->info($this->cpf);
+        if($this->cpf) {
+            $cpf = preg_replace('/\D/', '', $this->cpf);
             return substr($cpf, 0, 3) . '.'
                 . substr($cpf, 3, 3) . '.'
                 . substr($cpf, 6, 3) . '-'
@@ -70,7 +100,7 @@ class Patient extends Model
      */
     public function getFormattedGenderAttribute(): string
     {
-        return $this->attributes['gender'] === 'male' ? 'Masculino' : 'Feminino';
+        return $this->gender === 'male' ? 'Masculino' : 'Feminino';
     }
 
     /**
@@ -78,7 +108,7 @@ class Patient extends Model
      */
     public function getFormattedBirthdateAttribute(): string
     {
-        return Carbon::parse($this->attributes['birth_date'])->format('d/m/Y');
+        return Carbon::parse($this->birth_date)->format('d/m/Y');
     }
 
     protected static function boot(): void

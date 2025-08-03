@@ -12,7 +12,7 @@ class PrimaryCareProfessional extends User
     use HasFactory, Notifiable, HasRoles;
 
     protected $fillable = [
-        // crefito - Conselho Regional de Fisioterapia e Terapia Ocupacional
+        /* crefito - Conselho Regional de Fisioterapia e Terapia Ocupacional */
         'document',
     ];
 

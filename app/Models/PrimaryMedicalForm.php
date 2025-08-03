@@ -60,7 +60,8 @@ class PrimaryMedicalForm extends Model
         'ra_peso_saudavel',
         'ra_geracao_esporte',
         'ra_none_alternatives',
-        'tenant_id',
+
+        'basic_medical_form_id',
         'user_id',
     ];
 
@@ -81,18 +82,12 @@ class PrimaryMedicalForm extends Model
         return $this->belongsTo(BasicMedicalForm::class, 'basic_medical_form_id');
     }
 
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(Tenant::class);
-    }
-
     protected static function boot(): void
     {
         parent::boot();
         static::creating(function ($model) {
             $model->ulid = (string) Str::ulid();
         });
-        static::addGlobalScope(new TenantScope);
     }
 
     public function getRouteKeyName(): string
