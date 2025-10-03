@@ -45,17 +45,15 @@ class BasicMedicalForm extends Model
      */
     public function basicMedicalForms($search = null): LengthAwarePaginator
     {
+        $search = str_replace(['-', '.'], '', $search);
         return self::query()
             ->with(['patient', 'patient.address', 'primaryMedicalForms', 'secondaryMedicalForms'])
             ->when(
                 $search,
                 fn($query) =>
                     $query->select('*')->whereHas('patient', function($q) use ($search) {
-                        $q->where('patient_name', 'like', '%' . $search . '%')
-                            ->orWhere('cpf', 'like', '%' . $search . '%')
-                            ->orWhere('card_sus', 'like', '%' . $search . '%');
+                        $q->whereAny(['patient_name', 'cpf', 'card_sus'], 'like', '%' . $search . '%');
                     })
-
             )
             ->orderByDesc('created_at')
             ->paginate(7)
@@ -80,24 +78,30 @@ class BasicMedicalForm extends Model
      * @param array $data
      * @return BasicMedicalForm|null
      */
-    public function create(array $data): ?BasicMedicalForm
-    {
+    public function create(array $data): ?BasicMedicalForm {
         try {
-            return self::query()->create($data);
+            $patientCreated = (new Patient)->create($data);
+            if(!$patientCreated) {
+                return null;
+            }
+
+            $data['city'] = (new Tenant)->city($patientCreated->tenant_id) ?? null;
+            $patientCreated->address()->create($data);
+
+            $data['patient_id'] = $patientCreated->id;
+            $basicMedicalFormCreated = self::query()->create($data);
+
+            return $basicMedicalFormCreated ?: null;
         } catch (Exception $exception) {
-            logger()->error(
-                'Error trying to save medical form record: '.$exception->getMessage(),
-                [ 'exception' => $exception ]
-            );
             return null;
         }
     }
 
     /**
      * @param array $data
-     * @return bool
+     * @return BasicMedicalForm|null
      */
-    public function edit(array $data): bool
+    public function edit(array $data): BasicMedicalForm | bool
     {
         try {
             if(!isset($data['id'])) {
@@ -107,12 +111,16 @@ class BasicMedicalForm extends Model
             if(!$basicMedicalForm) {
                 return false;
             }
-            return $basicMedicalForm->update($data);
+            $data['city'] = (new Tenant)->city($basicMedicalForm->patient->tenant_id) ?? null;
+
+            $patientUpdated = $basicMedicalForm->patient->update($data);
+
+            $patientAddress = $basicMedicalForm->patient->address->first();
+            $patientAddress->update($data);
+
+            $basicMedicalFormUpdated = $basicMedicalForm->update($data);
+            return $patientUpdated && $basicMedicalFormUpdated ? $basicMedicalFormUpdated : false;
         } catch (Exception $exception) {
-            logger()->error(
-                'Error trying to update medical form record: '.$exception->getMessage(),
-                [ 'exception' => $exception ]
-            );
             return false;
         }
     }
