@@ -23,6 +23,8 @@ class HealthRecordRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => 'required|integer|exists:users,id',
+
             'pain' => 'boolean',
             'pain_description' => 'nullable|required_if:pain,true|string|max:200',
 

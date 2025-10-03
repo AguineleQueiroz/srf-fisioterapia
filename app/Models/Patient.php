@@ -84,7 +84,6 @@ class Patient extends Model
      */
     public function getFormattedCpfAttribute(): string
     {
-        logger()->info($this->cpf);
         if($this->cpf) {
             $cpf = preg_replace('/\D/', '', $this->cpf);
             return substr($cpf, 0, 3) . '.'
