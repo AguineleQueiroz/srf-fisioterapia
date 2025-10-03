@@ -4,7 +4,7 @@ import InputError from '@/components/InputError.vue';
 import TextArea from '@/components/TextArea.vue';
 import Checkbox from '@/components/ui/checkbox/Checkbox.vue';
 import { Label } from '@/components/ui/label';
-import { useForm, usePage } from '@inertiajs/vue3';
+import { router, useForm, usePage } from '@inertiajs/vue3';
 import { DialogClose } from 'radix-vue';
 import { ref } from 'vue';
 
@@ -62,15 +62,35 @@ const form = useForm({
     //autofilled fields
     basic_medical_form_id: props.medicalFormId,
     tenant_id: user.tenant_id,
+    user_id: user.id,
 });
 
 const open = ref(false);
+const isSubmitting = ref(false);
 
 const submit = () => {
+    if(isSubmitting.value) return;
+    isSubmitting.value = true;
     form.post(route('records.store'), {
-        onFinish: () => {
+        preserveScroll: true,
+        /**
+         * preserveState: false, funciona, porém, quando há erros de validação ocorre
+         * um refresh na pagina e logo, não é possivel visualizar as validações dos campos.
+         * Por isso, usar o router.visit() para atualizar os dados.
+         * */
+        preserveState: true,
+        only: [],
+        onSuccess: () => {
             form.reset();
+            open.value = false;
+            router.visit('/medical-forms');
         },
+        onError: () => {
+            //...
+        },
+        onFinish: () => {
+            isSubmitting.value = false;
+        }
     });
 };
 </script>
