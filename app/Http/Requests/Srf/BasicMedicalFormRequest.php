@@ -36,13 +36,13 @@ class BasicMedicalFormRequest extends FormRequest
             'patient_name' => 'required|string|max:255',
             'cpf' => request()->exists('id')
                 ? 'nullable|cpf|string|size:11'
-                : 'nullable|cpf|string|unique:basic_medical_forms,cpf|size:11',
+                : 'nullable|cpf|string|unique:patients,cpf|size:11',
             'birth_date' => 'required|date|before_or_equal:today',
             'gender' => 'required|in:male,female',
             'phone' => 'nullable|string',
             'card_sus' => request()->exists('id')
                 ? 'required|string'
-                : 'required|string|unique:basic_medical_forms,card_sus',
+                : 'required|string|unique:patients,card_sus',
             'address' => 'required|string|max:255',
             'primary_care_clinic' => 'required|string|max:255',
             'community_health_worker' => 'required|string|max:255',
