@@ -37,7 +37,7 @@ const search = () => {
                 <MedicalFormModal
                     triggerButtonText="Novo Atendimento"
                     :medical-form="{}"
-                    url="medical-form"
+                    url="forms.store"
                     :is-update="false"
                 />
             </div>

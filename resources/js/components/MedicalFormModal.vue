@@ -21,7 +21,7 @@ const props = defineProps<{
 
 const medicalForm = props.medicalForm;
 const user = usePage().props.auth.user
-console.log(props.medicalForm)
+
 const form = useForm({
     ...(medicalForm.id ? {id: medicalForm.id} : {}),
     patient_name: medicalForm.patient?.patient_name ?? '',
