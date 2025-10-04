@@ -101,15 +101,15 @@ class MedicalFormTest extends TestCase
      */
     public function test_index_loads_dashboard_with_medical_forms(): void
     {
-        $response = $this->actingAs($this->user)
-            ->get(route('forms.index'));
-
-        $response->assertStatus(200);
-        $response->assertInertia(fn ($assert) => $assert
-            //->component('Dashboard')
-            ->has('medicalForms')
-            ->where('searchParam', '')
-        );
+        $this->actingAs($this->user)
+            ->get(route('forms.index'))
+            ->assertOk()
+            ->assertInertia(fn ($assert) => $assert
+                ->component('Dashboard')
+                ->has('medicalForms.data')
+                ->has('medicalForms.data', fn ($forms) => $forms->etc())
+                ->where('searchParam', '')
+            );
     }
 
     /**
@@ -118,14 +118,18 @@ class MedicalFormTest extends TestCase
     public function test_index_searches_medical_forms_correctly(): void
     {
         $search = 'Costa';
-        $response = $this->actingAs($this->user)->get(route('forms.index', ['search' => $search]));
 
-        $response->assertStatus(200);
-        $response->assertInertia(fn ($assert) => $assert
-            //->component('Dashboard')
-            ->has('medicalForms')
-            ->where('searchParam', $search)
-        );
+        $this->actingAs($this->user)
+            ->get(route('forms.index', ['search' => $search]))
+            ->assertOk()
+            ->assertInertia(fn ($assert) => $assert
+                ->component('Dashboard')
+                ->has('medicalForms.data')
+                ->where('medicalForms.data.0.patient.patient_name', fn ($name) =>
+                str_contains($name, $search)
+                )
+                ->where('searchParam', $search)
+            );
     }
 
     /**
@@ -134,40 +138,50 @@ class MedicalFormTest extends TestCase
     public function test_index_with_no_matching_results(): void
     {
         $search = 'TermNonexistent';
-        $response = $this->actingAs($this->user)->get(route('forms.index', ['search' => $search]));
 
-        $response->assertStatus(200);
-        $response->assertInertia(fn ($assert) => $assert
-            //->component('Dashboard')
-            ->has('medicalForms')
-            ->where('searchParam', $search)
-        );
+        $this->actingAs($this->user)
+            ->get(route('forms.index', ['search' => $search]))
+            ->assertOk()
+            ->assertInertia(fn ($assert) => $assert
+                ->component('Dashboard')
+                ->has('medicalForms.data', 0)
+                ->where('searchParam', $search)
+            );
     }
 
     public function test_valid_basic_medical_form_is_stored_with_success_flash(): void
     {
-        $response = $this->actingAs($this->user)->post(route('forms.store'), $this->basicMedicalFormData);
-        $response->assertStatus(302);
-        $response->assertRedirect(route('forms.index'));
-        $response->assertSessionHas('success', 'Atendimento cadastrado.');
+        $this->actingAs($this->user)
+            ->post(route('forms.store'), $this->basicMedicalFormData)
+            ->assertRedirect(route('forms.index'))
+            ->assertSessionHas('success', 'Atendimento cadastrado.');
     }
 
     public function test_invalid_basic_medical_form_is_not_stored_and_user_is_redirected_with_errors(): void
     {
         $this->basicMedicalFormData['cpf'] = '000.456.789-09';
-        $response = $this->actingAs($this->user)->post(route('forms.store'), $this->basicMedicalFormData);
-        $response->assertStatus(302);
-        $response->assertRedirect(route('home'));
-        $this->assertTrue(session()->has('errors'));
-        $this->assertNotEmpty(session('errors')->getBag('default')->all());
-        $response->assertSessionHasErrors(['cpf']);
+
+        $this->actingAs($this->user)
+            ->post(route('forms.store'), $this->basicMedicalFormData)
+            ->assertRedirect(route('home'))
+            ->assertSessionHasErrors(['cpf']);
     }
 
     public function test_basic_medical_form_can_be_updated_success_flash(): void
     {
-        $this->form1->phone = '(38) 98989-5858';
-        $response = $this->actingAs($this->user)->put(route('forms.update'), $this->form1->toArray());
-        $response->assertStatus(302);
-        $response->assertRedirect(route('forms.index'))->assertSessionHas('success', 'Atendimento atualizado com sucesso.');
+        $data = array_merge(
+            $this->form1->toArray(),
+            $this->form1->patient->only(['ulid', 'patient_name', 'gender', 'tenant_id']),
+            [
+                'phone' => '(38) 90000-0000',
+                'birth_date' => '1980-08-24',
+                'card_sus' => '123456789000000',
+                'address' => 'Rua Editada, 1000',
+            ]
+        );
+        $this->actingAs($this->user)
+            ->put(route('forms.update'), $data)
+            ->assertRedirect(route('forms.index'))
+            ->assertSessionHas('success', 'Atendimento atualizado com sucesso.');
     }
 }
