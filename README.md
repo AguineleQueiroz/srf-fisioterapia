@@ -5,7 +5,8 @@ Basicamente tem o propósito de facilitar a gestão de atendimentos das atençõ
 ## Tecnologias Utilizadas
 
 - [x] Laravel 12.1
-- [x] PHP 8.12
+- [x] PHP 8.1
+- [x] PHPUnit
 - [x] MySQL
 - [x] Vue 3
 - [x] Digital Ocean - Droplets[VM para hospedagem]
