@@ -5,7 +5,7 @@ import Icon from '@/components/Icon.vue';
 import { ChevronDown, LoaderCircle } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useForm } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import MedicalFormModal from '@/components/MedicalFormModal.vue';
 import RegisterMedicalFormModal from '@/components/RegisterMedicalFormModal.vue';
 
@@ -185,10 +185,16 @@ const submit = () => {
                         <RegisterMedicalFormModal
                             triggerButtonText="Adicionar Ficha"
                             :medicalFormId="item.id"
-                            url="record.store"
+                            url="records.store"
                         />
 
-                        <Button name="list_medical_forms" class="rounded-sm px-4 hover:bg-teal-900">Fichas do Paciente</Button>
+                        <Button
+                            name="list_medical_forms"
+                            class="rounded-sm px-4 hover:bg-teal-900">
+                            <a :href="route('records.search', {id: item.id})" target="_blank" rel="noopener noreferrer">
+                                <span>{{ 'Fichas do Paciente' }}</span>
+                            </a>
+                        </Button>
 
                         <form @submit.prevent="submit" class="flex items-center">
                             <Select v-model="form.attention" name="attention" class="rounded-none" :class="{ 'border-red-500': form.errors.attention }">

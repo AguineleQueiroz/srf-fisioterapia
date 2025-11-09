@@ -75,6 +75,19 @@ class BasicMedicalForm extends Model
     }
 
     /**
+     * @param $id
+     * @return LengthAwarePaginator
+     */
+    public function basicMedicalFormById($id): LengthAwarePaginator
+    {
+        return self::query()
+            ->where('id', $id)
+            ->with(['primaryMedicalForms', 'secondaryMedicalForms'])
+            ->orderByDesc('created_at')
+            ->paginate(7);
+    }
+
+    /**
      * @param array $data
      * @return BasicMedicalForm|null
      */

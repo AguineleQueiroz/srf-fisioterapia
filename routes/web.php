@@ -19,7 +19,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/medical-forms/{user_id}', 'myForms')->name('forms.me');
     });
     Route::controller(HealthRecordController::class)->group(function () {
-        Route::post('/records', 'store')->name('records.store');
+        Route::get('/medical-forms/health-records', 'index')->name('records.index');
+        Route::get('/medical-forms/health-records/{id}', 'index')->name('records.search');
+        Route::post('/medical-forms/health-records', 'store')->name('records.store');
     });
     //Information Security Policy - intern
     Route::get('/security/information-security-policy', [InformationSecurityPolicyController::class, 'index'])->name('security.policy');

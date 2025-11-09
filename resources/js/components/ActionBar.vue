@@ -8,7 +8,18 @@ import MedicalFormModal from '@/components/MedicalFormModal.vue';
 
 const searchQuery = ref('');
 const search = () => {
-    if (searchQuery.value.trim()) router.get(route('forms.index'), { search: searchQuery.value });
+    if (searchQuery.value.trim()) {
+        router.get(
+            route('forms.index'),
+            { search: searchQuery.value },
+            {
+                preserveState: false,
+                onSuccess: () => {
+                    window.history.replaceState({}, '', route('forms.index'));
+                }
+            }
+        );
+    }
 };
 </script>
 
@@ -24,7 +35,7 @@ const search = () => {
                 @keydown.enter="search"
             />
             <span class="absolute inset-y-0 start-0 flex items-center justify-center px-2">
-            <Search class="text-gray-400 size-5" />
+            <Search class="text-gray-400 size-5 cursor-pointer" />
         </span>
         </div>
 
