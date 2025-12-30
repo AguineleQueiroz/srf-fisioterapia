@@ -1,0 +1,56 @@
+services:
+    backend:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        #platform: linux/amd64
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - redis
+            - mysql
+        networks:
+            - laravel
+
+    nginx:
+        image: nginx:alpine
+        #platform: linux/amd64
+        restart: unless-stopped
+        ports:
+            - "80:80"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/:/etc/nginx/conf.d/
+        depends_on:
+            - backend
+        networks:
+            - laravel
+
+    mysql:
+        image: 'mysql/mysql-server:8.0'
+        platform: linux/amd64
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE:-laravel}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+            MYSQL_PASSWORD: ${DB_PASSWORD:-userpass}
+            MYSQL_USER: ${DB_USERNAME:-username}
+        volumes:
+            - ./.docker/mysql/dbdata:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        networks:
+            - laravel
+
+    redis:
+        image: redis:latest
+        #platform: linux/amd64
+        restart: unless-stopped
+        networks:
+            - laravel
+
+networks:
+    laravel:
+        driver: bridge
