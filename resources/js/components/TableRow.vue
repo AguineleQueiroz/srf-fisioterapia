@@ -83,9 +83,9 @@ const submit = () => {
                 <td class="flex justify-center p-4 w-[162px]">
                     <Icon name="circle" size="24" :color="color(item.priority)" stroke-width="1" />
                 </td>
-                <td class="p-4 text-center w-[454px]">{{ item.patient.patient_name }}</td>
-                <td class="p-4 text-center w-[194px]">{{ item.patient.formatted_cpf || '---' }}</td>
-                <td class="p-4 text-center w-[247px]">{{ item.formatted_registered }}</td>
+                <td class="p-4 text-start w-[454px]">{{ item.patient.patient_name }}</td>
+                <td class="p-4 text-start w-[194px]">{{ item.patient.formatted_cpf || '' }}</td>
+                <td class="p-4 text-start w-[247px]">{{ item.formatted_registered }}</td>
                 <td class="flex justify-center p-4 w-[124px]" @click="toggleExpansiveRows(item.id)">
                     <ChevronDown class="text-teal-700" />
                 </td>

@@ -76,9 +76,10 @@ class BasicMedicalForm extends Model
 
     /**
      * @param array $data
-     * @return BasicMedicalForm|null
+     * @return Model|null
      */
-    public function create(array $data): ?BasicMedicalForm {
+    public function create(array $data): Model|null
+    {
         try {
             $patientCreated = (new Patient)->create($data);
             if(!$patientCreated) {

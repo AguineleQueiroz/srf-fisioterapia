@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Faker\Factory as Faker;
 use App\Models\BasicMedicalForm;
@@ -25,7 +26,7 @@ class MedicalFormsSeeder extends Seeder
             try {
                 $remaining = 3 - $users->count();
                 $newUsers = User::factory()->count($remaining)->create();
-                $users = $users->concat($newUsers);
+                $users = $users->concat((array)$newUsers);
             } catch (QueryException $exception) {
                 if ($exception->getCode() == 23000) {
                     continue;
@@ -131,7 +132,7 @@ class MedicalFormsSeeder extends Seeder
         }
     }
 
-    private function generateValidCPF(): string
+    public function generateValidCPF(): string
     {
         $n = [];
         for ($i = 0; $i < 9; $i++) {
