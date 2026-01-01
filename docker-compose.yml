@@ -1,0 +1,65 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        #platform: linux/amd64
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - redis
+            - postgresql17
+        networks:
+            - laravel
+
+    vite:
+        image: node:20-alpine
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+        ports:
+            - "5173:5173"
+        command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --strictPort"
+        networks:
+            - laravel
+
+    nginx:
+        image: nginx:alpine
+        #platform: linux/amd64
+        restart: unless-stopped
+        ports:
+            - "80:80"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/:/etc/nginx/conf.d/
+        depends_on:
+            - app
+        networks:
+            - laravel
+
+    postgresql17:
+        image: 'postgres:17-alpine'
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: ${DB_DATABASE}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+        volumes:
+            - ./.docker/postgres/data:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        networks:
+            - laravel
+
+    redis:
+        image: redis:latest
+        #platform: linux/amd64
+        restart: unless-stopped
+        networks:
+            - laravel
+
+networks:
+    laravel:
+        driver: bridge

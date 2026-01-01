@@ -7,10 +7,10 @@ Basicamente tem o propósito de facilitar a gestão de atendimentos das atençõ
 
 ## Tecnologias Utilizadas
 
-- [x] Laravel 12.1
-- [x] PHP 8.1
+- [x] Laravel 12.44.0
+- [x] PHP 8.4
 - [x] PHPUnit
-- [x] MySQL
+- [x] PostgreSQL
 - [x] Vue 3
 - [x] Digital Ocean - Droplets[VM para hospedagem]
 - [x] PHP Storm
@@ -34,12 +34,12 @@ Atualize as variáveis de ambiente listadas abaixo:
 APP_NAME="SRFisioterapia"
 APP_URL=http://localhost
 
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=nome_que_desejar_db
-DB_USERNAME=nome_usuario
-DB_PASSWORD=senha_aqui
+DB_CONNECTION=postgresql
+DB_HOST=postgresql17
+DB_PORT=5432
+DB_DATABASE=srf
+DB_USERNAME=root
+DB_PASSWORD=root
 
 CACHE_DRIVER=redis
 QUEUE_CONNECTION=redis
@@ -50,19 +50,29 @@ REDIS_PASSWORD=null
 REDIS_PORT=6379
 ```
 
+Suba os containers:
+```sh
+docker-compose up -d
+```
 Instale as dependências do projeto rodando:
 ```sh
-composer install
-```
-Rode as migrations do projeto:
-```
-php artisan migrate
+docker-compose exec app composer install
 ```
 Gere a key do projeto SRFisioterapia:
 ```sh
-php artisan key:generate
+docker-compose exec app php artisan key:generate
+```
+Rode as migrations do projeto:
+```
+docker-compose exec app php artisan migrate
+```
+Instale dependências Node - o Vite já instala automaticamente. Mas você pode forçar manualmente, caso seja necessário:
+```
+docker-compose exec vite npm install
 ```
 
+🌐 Acessando a Aplicação
 
-Agora você já pode acessar a aplicação através da url abaixo:
-[http://localhost](http://localhost)
+ - Laravel App: http://localhost
+ - Vite HMR: http://localhost:5174
+ - MySQL: localhost:3306

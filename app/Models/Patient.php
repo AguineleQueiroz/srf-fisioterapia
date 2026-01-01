@@ -39,9 +39,9 @@ class Patient extends Model
 
     /**
      * @param array $data
-     * @return Patient|null
+     * @return Model|null
      */
-    public function create(array $data): ?Patient
+    public function create(array $data): Model|null
     {
         try {
             return self::query()->create($data);
