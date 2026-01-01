@@ -10,7 +10,7 @@ Basicamente tem o propósito de facilitar a gestão de atendimentos das atençõ
 - [x] Laravel 12.44.0
 - [x] PHP 8.4
 - [x] PHPUnit
-- [x] PostgreSQL
+- [x] PostgreSQL 17
 - [x] Vue 3
 - [x] Digital Ocean - Droplets[VM para hospedagem]
 - [x] PHP Storm
@@ -75,4 +75,3 @@ docker-compose exec vite npm install
 
  - Laravel App: http://localhost
  - Vite HMR: http://localhost:5174
- - MySQL: localhost:3306
